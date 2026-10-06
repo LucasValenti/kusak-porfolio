@@ -1,0 +1,13 @@
+// Publicación en Cloudflare (Workers con archivos estáticos). Se sube SOLO dist/,
+// que arma herramientas/publicar.py. Nunca apuntar "directory" a la raíz del proyecto:
+// publicaría docs/, variantes/ y los .md internos.
+{
+  "name": "kusak",
+  "compatibility_date": "2026-10-01",
+  // Sin direcciones de vista previa: cada versión vieja quedaría pública en su propia URL
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

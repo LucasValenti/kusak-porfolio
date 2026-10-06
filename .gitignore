@@ -1,0 +1,14 @@
+# Repo público: solo el sitio y lo necesario para publicarlo.
+# Las notas internas se excluyen localmente en .git/info/exclude.
+
+# Procedencia de imágenes (tampoco se publica en el sitio)
+assets/**/*.json
+
+# Generado o local
+dist/
+.wrangler/
+.playwright-mcp/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
