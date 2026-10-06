@@ -393,15 +393,20 @@ a { color: inherit; }
 
 @media (max-width: 900px) {
   .barra { flex-wrap: wrap; gap: 10px; }
-  .barra__menu { display: inline-flex; order: 2; }
-  .barra__wa { order: 1; padding: 0 12px; }
+  .barra__menu { display: inline-flex; }
+  .barra__wa { padding: 0 12px; }
   .barra__wa span:not(.sr-only) { display: none; }
 
   /* En el celular el índice es una hoja de washi que ocupa la pantalla debajo de la
-     barra: las secciones grandes en mincho y, al pie, el botón de WhatsApp */
+     barra: las secciones grandes en mincho y, al pie, el botón de WhatsApp. Cuelga
+     de la barra (top 100 %) y mide lo que queda de pantalla, así sigue el alto real
+     de la barra aunque crezca. */
   .barra__nav {
-    position: fixed;
-    inset: 68px 0 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: calc(100dvh - 100%);
     display: none;
     flex-direction: column;
     padding: 8px var(--margen) calc(24px + env(safe-area-inset-bottom));
