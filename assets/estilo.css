@@ -319,16 +319,39 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-.barra__nav ul { display: flex; gap: 30px; margin: 0; padding: 0; list-style: none; }
-.barra__nav a {
+/* La navegación es un índice: enlaces quietos en tinta 2 y, junto a la sección en
+   la que estás, el sellito bermellón de la opción elegida del formulario. Al pasar
+   el mouse el sellito asoma en sumi, más chico, como un sello a punto de bajar. */
+.barra__nav ul { display: flex; gap: clamp(24px, 2.6vw, 38px); margin: 0; padding: 0; list-style: none; }
+.barra__nav ul a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--tinta-2);
   font-size: .95rem;
   text-decoration: none;
-  text-underline-offset: 8px;
   transition: color .2s ease-out;
 }
-.barra__nav a:hover { color: var(--color-sumi); }
-.barra__nav a[aria-current] { color: var(--color-sumi); text-decoration: underline 2px var(--color-vermillion); }
+.barra__nav ul a::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  background: var(--color-vermillion);
+  transform: rotate(-4deg) scale(0);
+  transition: transform .24s var(--ease-out);
+}
+.barra__nav ul a[aria-current] { color: var(--color-sumi); }
+.barra__nav ul a[aria-current]::before { transform: rotate(-4deg) scale(1); }
+@media (hover: hover) {
+  .barra__nav ul a:hover { color: var(--color-sumi); }
+  .barra__nav ul a:not([aria-current]):hover::before { background: var(--color-sumi); transform: rotate(-4deg) scale(.6); }
+}
+/* El botón grande de WhatsApp vive solo en la hoja del celular */
+.barra__nav .barra__hoja-wa { display: none; }
 
 .barra__wa {
   order: 3;
@@ -352,28 +375,55 @@ a { color: inherit; }
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid var(--borde-campo);
-  border-radius: 2px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 0;
   background: none;
+  box-shadow: inset 0 0 0 1.5px var(--color-sumi);
   color: var(--color-sumi);
   font: 700 .95rem var(--f-gothic);
   cursor: pointer;
 }
+.barra__menu:active { transform: translateY(1px) scale(.985); }
 .barra__menu .ico--cerrar { display: none; }
 .barra.menu-abierto .ico--menu { display: none; }
 .barra.menu-abierto .ico--cerrar { display: block; }
+/* Abierto, el botón queda entintado */
+.barra.menu-abierto .barra__menu { background: var(--color-sumi); color: var(--color-washi); }
 
 @media (max-width: 900px) {
   .barra { flex-wrap: wrap; gap: 10px; }
   .barra__menu { display: inline-flex; order: 2; }
   .barra__wa { order: 1; padding: 0 12px; }
   .barra__wa span:not(.sr-only) { display: none; }
-  .barra__nav { order: 4; flex-basis: 100%; display: none; }
-  .barra.menu-abierto .barra__nav { display: block; }
-  .barra__nav ul { flex-direction: column; gap: 0; padding: 8px 0 12px; }
-  .barra__nav a { display: block; padding: 12px 0; font-size: 1.125rem; border-top: 1px solid var(--filete); }
-  .sin-js .barra__nav { display: block; }
+
+  /* En el celular el índice es una hoja de washi que ocupa la pantalla debajo de la
+     barra: las secciones grandes en mincho y, al pie, el botón de WhatsApp */
+  .barra__nav {
+    position: fixed;
+    inset: 68px 0 0;
+    display: none;
+    flex-direction: column;
+    padding: 8px var(--margen) calc(24px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--color-washi);
+  }
+  .barra.menu-abierto .barra__nav { display: flex; }
+  .barra__nav ul { flex-direction: column; gap: 0; }
+  .barra__nav li + li { border-top: 1px solid var(--filete); }
+  .barra__nav ul a {
+    display: flex;
+    gap: 16px;
+    min-height: 76px;
+    color: var(--color-sumi);
+    font: 700 2rem/1.15 var(--f-mincho);
+  }
+  .barra__nav ul a::before { position: static; order: 1; flex: none; width: 10px; height: 10px; }
+  .barra__nav .barra__hoja-wa { display: inline-flex; margin-top: auto; }
+
+  .sin-js .barra__nav { position: static; display: flex; order: 4; flex-basis: 100%; padding: 0 0 12px; overflow: visible; }
+  .sin-js .barra__nav .barra__hoja-wa { margin-top: 12px; }
   .sin-js .barra__menu { display: none; }
 }
 @media (max-width: 380px) {
