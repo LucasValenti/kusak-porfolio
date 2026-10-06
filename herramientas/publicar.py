@@ -7,7 +7,7 @@ Uso:
 
 Va a dist/: index.html (con la dirección absoluta para redes y buscadores), 404.html,
 assets/ sin los .json de procedencia, _headers (cabeceras de seguridad y caché),
-robots.txt y sitemap.xml. El resto del proyecto (notas y archivos internos) no se publica.
+robots.txt, sitemap.xml y .well-known/security.txt. El resto del proyecto (notas y archivos internos) no se publica.
 """
 import argparse
 import datetime
@@ -18,6 +18,32 @@ import subprocess
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 DIST = RAIZ / 'dist'
+
+
+def analitica(html):
+    """Cloudflare Web Analytics, solo si existe herramientas/analitica.local (fuera de git).
+
+    El identificador del sitio no está en el código del repo: se agrega acá, con el permiso
+    justo en la CSP para el script y para el envío de las visitas.
+    """
+    archivo = RAIZ / 'herramientas' / 'analitica.local'
+    if not archivo.exists():
+        print('Sin herramientas/analitica.local: se publica sin medición')
+        return html
+    token = archivo.read_text(encoding='utf-8').strip()
+    if not re.fullmatch(r'[0-9a-f]{32}', token):
+        raise SystemExit('herramientas/analitica.local no tiene un identificador válido')
+    cambios = [
+        ("script-src 'self'", "script-src 'self' https://static.cloudflareinsights.com"),
+        ("connect-src 'none'", 'connect-src https://cloudflareinsights.com'),
+        ('</body>', '  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+                    'data-cf-beacon=\'{"token": "%s"}\'></script>\n</body>' % token),
+    ]
+    for antes, despues in cambios:
+        if html.count(antes) != 1:
+            raise SystemExit('No se pudo agregar la medición: no encontré %r' % antes)
+        html = html.replace(antes, despues)
+    return html
 
 
 def armar(url):
@@ -34,6 +60,11 @@ def armar(url):
         '  <meta property="og:type" content="website">\n'
         '  <meta property="og:url" content="%s/">\n'
         '  <link rel="canonical" href="%s/">\n' % (url, url), 1)
+    # Datos estructurados: las mismas direcciones, absolutas
+    html = html.replace('"url": "/"', '"url": "%s/"' % url, 1)
+    html = html.replace('"logo": "assets/', '"logo": "%s/assets/' % url, 1)
+    html = html.replace('"image": "assets/', '"image": "%s/assets/' % url, 1)
+    html = analitica(html)
     (DIST / 'index.html').write_text(html, encoding='utf-8')
     shutil.copy2(RAIZ / '404.html', DIST / '404.html')
     shutil.copytree(RAIZ / 'assets', DIST / 'assets', ignore=shutil.ignore_patterns('*.json'))
@@ -65,6 +96,14 @@ def armar(url):
 
     (DIST / 'robots.txt').write_text(
         'User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n' % url, encoding='utf-8')
+    # Contacto para reportar problemas de seguridad (RFC 9116); vence a los 11 meses de cada publicación
+    vence = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=335)
+    (DIST / '.well-known').mkdir()
+    (DIST / '.well-known' / 'security.txt').write_text(
+        'Contact: https://wa.me/5493415000651\n'
+        'Expires: %s\n'
+        'Preferred-Languages: es, en\n'
+        'Canonical: %s/.well-known/security.txt\n' % (vence.strftime('%Y-%m-%dT%H:%M:%SZ'), url), encoding='utf-8')
     hoy = datetime.date.today().isoformat()
     (DIST / 'sitemap.xml').write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
