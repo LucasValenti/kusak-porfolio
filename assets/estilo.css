@@ -433,6 +433,8 @@ a { color: inherit; }
 }
 @media (max-width: 380px) {
   .lockup__estudio { display: none; }
+  /* La firma se achica para que "tu negocio." no se parta */
+  .inicio .inicio__titular { grid-template-columns: minmax(0, 1fr) 60px; gap: 6px; }
 }
 
 /* ---------- Inicio ---------- */
@@ -897,29 +899,42 @@ a { color: inherit; }
 /* El sello grande: la marca estampada en el papel, con la tinta gastada (una máscara de
    grano deja huecos donde el sello no cargó tinta) y apoyada sobre el papel (multiply).
    Entra una vez, como un sello que baja y se asienta. Su rotación de -2° viene en el SVG. */
+/* La tinta gastada vale para los dos: el sello grande de escritorio y la firma del celular */
+.sello-grande,
+.sello-firma {
+  height: auto;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -5 3.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 240px 240px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -5 3.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 240px 240px;
+  animation: sello-estampa .7s var(--ease-out) .3s both;
+}
 .sello-grande {
   position: absolute;
   top: 50%;
   right: 0;
   z-index: 0;
   width: min(26vw, 372px);
-  height: auto;
-  pointer-events: none;
   translate: 0 -38%;
-  mix-blend-mode: multiply;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -5 3.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 240px 240px;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -5 3.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 240px 240px;
-  animation: sello-estampa .7s var(--ease-out) .3s both;
 }
+/* En escritorio el titular va solo; la firma es del celular */
+.sello-firma { display: none; }
 @keyframes sello-estampa { from { opacity: 0; transform: scale(1.12); } 55% { opacity: 1; } }
 .rama { z-index: 1; }
 /* Lo que sobresale se recorta en el borde de la pantalla, sin crear scroll lateral */
 main { overflow-x: clip; }
 @media (max-width: 760px) {
   .rama { display: none; }
-  /* En celular el sello se apoya debajo de los botones, montado sobre el filete que
-     abre Trabajos: une las dos secciones en lugar de cortarlas */
-  .sello-grande { position: relative; top: auto; right: auto; z-index: 2; justify-self: end; width: 112px; margin: 28px 2px -64px 0; translate: none; }
+  /* En celular el sello firma el titular: va en su propia columna, abajo a la derecha,
+     junto a la última línea. El titular se acomoda en el ancho que le queda. */
+  .sello-grande { display: none; }
+  .inicio__titular {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(72px, 13vw, 100px);
+    align-items: end;
+    gap: 10px;
+  }
+  .sello-firma { display: block; width: 100%; margin-bottom: .08em; }
   .inicio .boton { width: 100%; }
 }
 
