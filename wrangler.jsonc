@@ -3,11 +3,24 @@
 // publicaría docs/, variantes/ y los .md internos.
 {
   "name": "kusak",
+  "main": "worker.js",
   "compatibility_date": "2026-10-01",
   // Sin direcciones de vista previa: cada versión vieja quedaría pública en su propia URL
   "preview_urls": false,
+  // workers.dev sigue activo solo para redirigir los links viejos a kusak.dev
+  "workers_dev": true,
+  // Dominio propio (comprado en Cloudflare el 2026-10-10). workers.dev queda activo solo para redirigir.
+  "routes": [
+    { "pattern": "kusak.dev", "custom_domain": true },
+    { "pattern": "www.kusak.dev", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // El Worker corre primero para poder redirigir www y workers.dev al dominio canónico
+    "run_worker_first": true
+  },
+  // Logs de errores en Cloudflare (capa KUSAK)
+  "observability": { "enabled": true }
 }
