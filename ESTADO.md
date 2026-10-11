@@ -24,7 +24,8 @@ Portfolio y vitrina de KUSAK / SŌ Studio en HTML, CSS y JS sin build, publicado
 
 ## Etapa 4 — Cuatro líneas de servicio · 25 %
 - [x] Web con las 4 líneas, sin Club de Boxeo y con página de privacidad (publicada en kusak.dev el 2026-10-10)
-- [ ] Commitear los cambios ya publicados (`index.html`, `assets/`, `publicar.py`, `privacidad.html` y `worker.js` sin commit)
+- [x] Commitear los cambios ya publicados (`970a1fb` y `774f890`, 2026-10-10)
+- [ ] Subir los commits a GitHub (`git push`)
 - [ ] Rubro salud visible en la web → impeccable
 
 ## Etapa 5 — Trabajos · 15 %
