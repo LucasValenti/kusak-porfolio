@@ -2,7 +2,7 @@
 
 Portfolio de Lucas Valenti (Kusak), desarrollo web en Rosario, Argentina.
 
-Sitio publicado: https://kusak.kusak.workers.dev
+Sitio publicado: https://kusak.dev (www y kusak.kusak.workers.dev redirigen acá)
 
 ## Estructura
 

@@ -1,4 +1,4 @@
-"""Arma la carpeta dist/ que se publica y, con --subir, la sube a Cloudflare (kusak.kusak.workers.dev).
+"""Arma la carpeta dist/ que se publica y, con --subir, la sube a Cloudflare (https://kusak.dev).
 
 Uso:
     python herramientas/publicar.py                    # solo arma dist/
@@ -67,6 +67,7 @@ def armar(url):
     html = analitica(html)
     (DIST / 'index.html').write_text(html, encoding='utf-8')
     shutil.copy2(RAIZ / '404.html', DIST / '404.html')
+    shutil.copy2(RAIZ / 'privacidad.html', DIST / 'privacidad.html')
     shutil.copytree(RAIZ / 'assets', DIST / 'assets', ignore=shutil.ignore_patterns('*.json'))
 
     # La misma política de la página, más lo que solo se puede poner como cabecera
@@ -109,7 +110,8 @@ def armar(url):
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         '  <url><loc>%s/</loc><lastmod>%s</lastmod></url>\n'
-        '</urlset>\n' % (url, hoy), encoding='utf-8')
+        '  <url><loc>%s/privacidad</loc><lastmod>%s</lastmod></url>\n'
+        '</urlset>\n' % (url, hoy, url, hoy), encoding='utf-8')
 
     peso = sum(f.stat().st_size for f in DIST.rglob('*') if f.is_file())
     print('dist/ listo para %s (%d archivos, %.0f KB)' % (url, sum(1 for f in DIST.rglob('*') if f.is_file()), peso / 1024))
@@ -122,7 +124,7 @@ def subir():
 
 if __name__ == '__main__':
     a = argparse.ArgumentParser(description='Arma dist/ y la sube a Cloudflare Pages.')
-    a.add_argument('--url', default='https://kusak.kusak.workers.dev', help='dirección pública final, sin barra al final')
+    a.add_argument('--url', default='https://kusak.dev', help='dirección pública final, sin barra al final')
     a.add_argument('--subir', action='store_true', help='subir dist/ a Cloudflare Pages después de armarla')
     args = a.parse_args()
     armar(args.url)
