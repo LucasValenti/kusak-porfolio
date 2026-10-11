@@ -20,7 +20,7 @@ Portfolio y vitrina de KUSAK / SŌ Studio en HTML, CSS y JS sin build, publicado
 - [x] Publicado en kusak.dev (2026-10-11)
 - [x] Commitear y subir a GitHub los cambios del 2026-10-11
 - [x] Borradas las imágenes sin uso (capturas del Club de Boxeo, soles del inicio viejo y `herramientas/sol.py`) (2026-10-11)
-- [ ] Volver a publicar para que esas imágenes dejen de estar en kusak.dev
+- [x] Volver a publicar para que esas imágenes dejen de estar en kusak.dev (2026-10-11)
 
 ## Etapa 2 — Calidad · 15 %
 - [x] Auditoría: datos estructurados, security.txt, SŌ accesible y medición opcional
