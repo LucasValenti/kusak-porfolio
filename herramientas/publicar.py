@@ -89,9 +89,6 @@ def armar(url):
         '  Cache-Control: public, max-age=604800\n'
         '\n'
         '/assets/marca/*\n'
-        '  Cache-Control: public, max-age=604800\n'
-        '\n'
-        '/assets/capitan/*\n'
         '  Cache-Control: public, max-age=604800\n' % csp,
         encoding='utf-8')
 

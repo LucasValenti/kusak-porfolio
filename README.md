@@ -7,7 +7,7 @@ Sitio publicado: https://kusak.dev (www y kusak.kusak.workers.dev redirigen acá
 ## Estructura
 
 - `index.html` y `404.html`: las páginas.
-- `assets/`: estilos, scripts, fuentes, imágenes, el logo (`marca/`) y los cuadros de Capitán (`capitan/`).
+- `assets/`: estilos, scripts, fuentes, imágenes y el logo (`marca/`).
 - `herramientas/publicar.py`: arma `dist/` y publica en Cloudflare.
 - `herramientas/og/og.html`: fuente de la imagen para redes (`assets/og.png`).
 - `herramientas/sol.py`: genera el sol pintado (archivado, sin uso en la página).

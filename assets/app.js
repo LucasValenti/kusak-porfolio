@@ -174,6 +174,84 @@
     actualizar();
   }
 
+  /* ---------- Inicio: la captura crece de tarjeta a pantalla completa ---------- */
+  // Versión en JS plano de ScrollExpandMedia (21st.dev), con sticky en lugar de frenar
+  // la rueda. Por cuadro solo cambian el recorte (clip-path) y transforms.
+  const inicio = $('[data-expande]');
+  if (inicio) {
+    const escena = $('.inicio__escena', inicio);
+    const media = $('[data-expande-media]', inicio);
+    const img = $('img', media);
+    const caso = $('[data-expande-caso]', inicio);
+    const izq = $$('[data-izq]', inicio);
+    const der = $$('[data-der]', inicio);
+    const suave = function (t) { return 1 - Math.pow(1 - t, 2); };
+    let W = 0, H = 0, w0 = 0, h0 = 0, tope = 0, celu = false, pedido = false;
+
+    const medir = function () {
+      const vw = escena.clientWidth;
+      const vh = escena.clientHeight;
+      celu = vw <= 760;
+      tope = parseFloat(getComputedStyle(escena).top) || 0;
+      W = Math.min(vw * (celu ? 1 : 0.95), 1560);
+      H = Math.min(vh * (celu ? 0.82 : 0.86), 940);
+      w0 = celu ? 236 : 300;
+      h0 = celu ? 300 : 380;
+      media.style.width = W + 'px';
+      media.style.height = H + 'px';
+    };
+    const pintar = function () {
+      pedido = false;
+      const r = inicio.getBoundingClientRect();
+      const p = acotar((tope - r.top) / Math.max(1, r.height - escena.clientHeight));
+      const e = suave(acotar(p / 0.7));
+      const c = acotar((p - 0.72) / 0.18);
+      const w = w0 + (W - w0) * e;
+      const h = h0 + (H - h0) * e;
+      const y = (H - h) / 2;
+      media.style.clipPath = 'inset(' + y.toFixed(1) + 'px ' + ((W - w) / 2).toFixed(1) + 'px round ' + (16 * (1 - e)).toFixed(1) + 'px)';
+      img.style.transform = 'translateY(' + y.toFixed(1) + 'px) scale(' + (w / W).toFixed(4) + ')';
+      const corre = e * (celu ? 110 : 100);
+      izq.forEach(function (n) { n.style.transform = 'translateX(' + (-corre).toFixed(2) + 'vw)'; });
+      der.forEach(function (n) { n.style.transform = 'translateX(' + corre.toFixed(2) + 'vw)'; });
+      inicio.style.setProperty('--e', e.toFixed(3));
+      inicio.style.setProperty('--c', c.toFixed(3));
+      // Mientras el caso no se ve, su botón no recibe foco
+      caso.style.visibility = c > 0.05 ? 'visible' : 'hidden';
+    };
+    const pedir = function () { if (!pedido) { pedido = true; requestAnimationFrame(pintar); } };
+    const alRedimensionar = function () { medir(); pintar(); };
+
+    const activar = function () {
+      if (quieto.matches) {
+        inicio.classList.remove('inicio--expande');
+        [media, img, caso].concat(izq, der).forEach(function (n) { n.removeAttribute('style'); });
+        inicio.removeAttribute('style');
+        window.removeEventListener('scroll', pedir);
+        window.removeEventListener('resize', alRedimensionar);
+        return;
+      }
+      inicio.classList.add('inicio--expande');
+      alRedimensionar();
+      window.addEventListener('scroll', pedir, { passive: true });
+      window.addEventListener('resize', alRedimensionar);
+    };
+    activar();
+    alCambiar(quieto, activar);
+  }
+
+  /* ---------- Cómo trabajo: la escalera se dibuja y cada numeral se estampa ---------- */
+  const escalera = $('.pasos__lista');
+  if (escalera && !quieto.matches && 'IntersectionObserver' in window) {
+    escalera.classList.add('pasos__lista--espera');
+    const vigia = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      escalera.classList.add('pasos__lista--arma');
+      vigia.disconnect();
+    }, { rootMargin: '0px 0px -20% 0px' });
+    vigia.observe(escalera);
+  }
+
   // La hora de la burbuja del chat es la del visitante
   const hora = $('[data-hora]');
   if (hora) {
