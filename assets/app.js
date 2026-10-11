@@ -121,11 +121,12 @@
     const vista = $('[data-quote-preview]'), estado = $('[data-quote-status]');
     const nombre = $('#q-nombre', form), negocio = $('#q-negocio', form), detalle = $('#q-detalle', form);
     const SERV = {
-      landing: 'una landing',
-      institucional: 'una web institucional',
+      web: 'una página web',
       tienda: 'una tienda online',
-      mantenimiento: 'el mantenimiento de mi web',
-      nose: 'una web, pero todavía no sé bien qué necesito'
+      sistema: 'un sistema a medida',
+      automatizacion: 'una automatización con IA',
+      mantenimiento: 'el mantenimiento de mi web o sistema',
+      nose: 'mi negocio, pero todavía no sé bien qué necesito'
     };
     const componer = function () {
       const n = nombre.value.trim(), b = negocio.value.trim(), d = detalle.value.trim();
@@ -133,7 +134,7 @@
       let msg = 'Hola, Lucas.';
       if (n) msg += ' Soy ' + n + (b ? ', de ' + b : '') + '.';
       else if (b) msg += ' Te escribo por ' + b + '.';
-      msg += ' Quiero pedirte un presupuesto para ' + (elegido ? SERV[elegido.value] : 'una web') + '.';
+      msg += ' Quiero pedirte un presupuesto para ' + (elegido ? SERV[elegido.value] : 'mi negocio') + '.';
       if (d) msg += '\n\n' + d;
       return msg;
     };
