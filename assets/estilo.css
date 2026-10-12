@@ -132,9 +132,9 @@ html { scrollbar-color: var(--grafito) var(--negro); scrollbar-width: thin; }
   pointer-events: none; opacity: 0;
 }
 .glitch__txt::before { color: var(--hueso); clip-path: inset(22% 0 48% 0); }
-.glitch__txt::after { color: var(--glitch-b, #ff3d6e); clip-path: inset(50% 0 18% 0); mix-blend-mode: screen; }
+.glitch__txt::after { color: #ff3d6e; clip-path: inset(50% 0 18% 0); }
 .boton--acento .glitch__txt::before, .boton--hueso .glitch__txt::before, .cierre__barra .glitch__txt::before { color: var(--negro); }
-.boton--acento .glitch__txt::after, .boton--hueso .glitch__txt::after, .cierre__barra .glitch__txt::after { color: #3d6bff; mix-blend-mode: multiply; }
+.boton--acento .glitch__txt::after, .boton--hueso .glitch__txt::after, .cierre__barra .glitch__txt::after { color: #3d6bff; }
 @media (hover: hover) {
   .glitch:hover .glitch__txt::before { animation: glitch-a 0.42s steps(1) both; }
   .glitch:hover .glitch__txt::after { animation: glitch-b 0.42s steps(1) both; }

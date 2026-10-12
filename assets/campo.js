@@ -1,7 +1,9 @@
 /* KUSAK · campo del inicio: "Pulso"
    Un fragment shader propio: líneas horizontales finas que se levantan en picos, como una señal,
    y se encienden en el color de acento donde pasa el mouse. Sin librerías.
-   Se pausa fuera de pantalla y con la pestaña oculta; con movimiento reducido dibuja un solo cuadro. */
+   Para cuidar la placa de video: densidad 1, 30 cuadros por segundo con el mouse quieto (60 cuando se
+   mueve) y 30 fijos si el equipo no llega. Se pausa fuera de pantalla y con la pestaña oculta;
+   con movimiento reducido dibuja un solo cuadro. */
 (function () {
   'use strict';
 
@@ -83,8 +85,8 @@
   let dpr = 1;
   const medir = function () {
     const ancho = canvas.clientWidth, alto = canvas.clientHeight;
-    // En celular basta con densidad 1 y menos líneas: el costo crece con píxeles × líneas
-    dpr = ancho < 700 ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+    // Densidad 1 siempre: las líneas de 1 px se ven igual y en pantallas retina son 4 veces menos píxeles
+    dpr = 1;
     canvas.width = Math.round(ancho * dpr);
     canvas.height = Math.round(alto * dpr);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -95,7 +97,9 @@
 
   // Mouse suavizado: los picos llegan con retardo, no saltan
   let mx = canvas.width * 0.7, my = canvas.height * 0.6, tx = mx, ty = my, fuerza = 0, fuerzaObj = 0.35;
+  let ultimoMov = -1e9;
   window.addEventListener('pointermove', function (e) {
+    ultimoMov = performance.now();
     const r = canvas.getBoundingClientRect();
     tx = (e.clientX - r.left) * dpr;
     ty = (r.bottom - e.clientY) * dpr;
@@ -113,7 +117,21 @@
   };
 
   let corriendo = false, visible = true, raf = 0;
-  const bucle = function (ahora) { dibujar(ahora); raf = requestAnimationFrame(bucle); };
+  // 60 cuadros por segundo mientras el mouse se mueve, 30 cuando está quieto; si el equipo no llega
+  // (cuadros de más de 24 ms en promedio), queda en 30 para siempre
+  let anterior = 0, lento = false, muestras = 0, suma = 0;
+  const bucle = function (ahora) {
+    raf = requestAnimationFrame(bucle);
+    const movil = !lento && ahora - ultimoMov < 1500;
+    if (!movil && ahora - anterior < 31) return;
+    // Solo se mide mientras se apunta a 60: ahí un promedio alto quiere decir que el equipo no llega
+    if (movil && anterior && ahora - anterior < 200 && muestras < 90) {
+      suma += ahora - anterior; muestras++;
+      if (muestras === 90 && suma / muestras > 24) lento = true;
+    }
+    anterior = ahora;
+    dibujar(ahora);
+  };
   const decidir = function () {
     const debe = !reducido && visible && !document.hidden;
     if (debe && !corriendo) { corriendo = true; raf = requestAnimationFrame(bucle); }
