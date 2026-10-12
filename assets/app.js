@@ -1,120 +1,187 @@
-/* Comportamiento de la página: las capturas que se recorren, el menú y el presupuesto que arma el mensaje de
-   WhatsApp. Con movimiento reducido, todo queda quieto y encendido. */
+/* KUSAK · comportamiento de la página de inicio */
 (function () {
   'use strict';
 
+  const $ = function (s, r) { return (r || document).querySelector(s); };
+  const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   const WA = 'https://wa.me/5493415000651';
-  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const $ = function (s, c) { return (c || document).querySelector(s); };
-  const $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-  const raiz = document.documentElement;
-  const alCambiar = function (mq, fn) { if (mq.addEventListener) mq.addEventListener('change', fn); else mq.addListener(fn); };
-  const acotar = function (v) { return Math.min(1, Math.max(0, v)); };
+  const K = window.KUSAK || {};
+  const gsap = K.gsap, ST = K.ST;
+  const conMovimiento = !!gsap && !K.reducido;
 
-  /* ---------- Trabajos: el sitio entero pasa por la vidriera con el scroll ---------- */
+  /* ---------- Hora de Rosario ---------- */
 
-  const ventanas = $$('[data-recorrido]');
-  // Con movimiento reducido no hay recorrido: la captura se desplaza a mano, también con teclado
-  const manual = function () {
-    ventanas.forEach(function (v) {
-      if (quieto.matches) {
-        v.tabIndex = 0;
-        v.setAttribute('role', 'region');
-        v.setAttribute('aria-label', 'Captura del sitio. Usá las flechas para recorrerla.');
-      } else {
-        v.removeAttribute('tabindex');
-        v.removeAttribute('role');
-        v.removeAttribute('aria-label');
-      }
-    });
-  };
-  manual();
-  alCambiar(quieto, manual);
-  // Donde el navegador sabe animar con el scroll (CSS animation-timeline), lo hace el CSS
-  // fuera del hilo principal; este código queda como respaldo para los demás.
-  const recorreCSS = !!(window.CSS && CSS.supports('animation-timeline', 'view()'));
-  const enVista = new Set();
-  function recorrer() {
-    if (quieto.matches) return;
-    const vh = window.innerHeight;
-    enVista.forEach(function (v) {
-      const img = $('img', v);
-      if (!img || !img.naturalWidth) return;
-      const r = v.getBoundingClientRect();
-      const p = acotar((vh - r.top) / (vh + r.height));
-      const q = acotar((p - .12) / .76);
-      const s = q * q * (3 - 2 * q);
-      const y = Math.max(0, Math.round((r.width * img.naturalHeight / img.naturalWidth - r.height) * s));
-      img.style.transform = 'translate3d(0,' + -y + 'px,0)';
-    });
-  }
-  if (!recorreCSS && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) enVista.add(e.target); else enVista.delete(e.target); });
-      recorrer();
-    }, { rootMargin: '15% 0px' });
-    ventanas.forEach(function (v) {
-      io.observe(v);
-      $('img', v).addEventListener('load', recorrer);
-    });
-    let rp = false;
-    window.addEventListener('scroll', function () {
-      if (rp || !enVista.size) return;
-      rp = true;
-      requestAnimationFrame(function () { rp = false; recorrer(); });
-    }, { passive: true });
-    window.addEventListener('resize', recorrer);
-    // Si se activa el movimiento reducido con la página abierta, las capturas vuelven arriba y quedan quietas
-    alCambiar(quieto, function () {
-      if (quieto.matches) ventanas.forEach(function (v) { $('img', v).style.transform = ''; });
-      else recorrer();
-    });
+  const reloj = $('[data-reloj]');
+  if (reloj) {
+    const fmt = new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Cordoba' });
+    const tic = function () {
+      const d = new Date();
+      reloj.textContent = fmt.format(d);
+      reloj.setAttribute('datetime', d.toISOString());
+    };
+    tic();
+    setInterval(tic, 15000);
   }
 
-  /* ---------- Posición en la barra y menú ---------- */
+  /* ---------- Menú en celular ---------- */
 
-  const barra = $('[data-barra]');
-  if (barra) {
-    const tramos = $$('[data-tramo]', barra);
-    const secciones = ['inicio', 'trabajos', 'servicios', 'como-trabajo', 'presupuesto'].map(function (id) { return document.getElementById(id); });
-    const marcar = function (i) {
-      tramos.forEach(function (t) {
-        if (+t.getAttribute('data-tramo') === i && i > 0) t.setAttribute('aria-current', 'true');
-        else t.removeAttribute('aria-current');
+  const menu = $('[data-menu]'), nav = $('#nav');
+  if (menu && nav) {
+    const cerrar = function () { nav.classList.remove('abierta'); menu.setAttribute('aria-expanded', 'false'); };
+    menu.addEventListener('click', function () {
+      const abrir = !nav.classList.contains('abierta');
+      nav.classList.toggle('abierta', abrir);
+      menu.setAttribute('aria-expanded', String(abrir));
+      if (abrir) { const a = $('a', nav); if (a) a.focus(); }
+    });
+    nav.addEventListener('click', function (e) { if (e.target.closest('a')) cerrar(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('abierta')) { cerrar(); menu.focus(); } });
+  }
+
+  /* ---------- Cabecera: cambia de tinta sobre las zonas claras ---------- */
+
+  const cabecera = $('[data-cabecera]');
+  const claras = $$('.tema-claro, .pie, .carta--acento, .carta--hueso, .carta--piedra');
+  if (cabecera && 'IntersectionObserver' in window && claras.length) {
+    const debajo = new Set();
+    const vigia = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) debajo.add(e.target); else debajo.delete(e.target); });
+      cabecera.classList.toggle('sobre-claro', debajo.size > 0);
+    }, { rootMargin: '0px 0px -94% 0px' });
+    claras.forEach(function (el) { vigia.observe(el); });
+  }
+
+  /* ---------- Sección activa en la nav ---------- */
+
+  const secciones = $$('[data-seccion]');
+  if ('IntersectionObserver' in window && secciones.length) {
+    const marcar = function (id) {
+      $$('[data-nav]').forEach(function (a) {
+        if (a.getAttribute('data-nav') === id) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
       });
     };
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) marcar(secciones.indexOf(e.target)); });
-      }, { rootMargin: '-40% 0px -55% 0px' });
-      secciones.forEach(function (s) { if (s) io.observe(s); });
-    }
+    const io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) marcar(e.target.getAttribute('data-seccion')); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    secciones.forEach(function (s) { io.observe(s); });
+  }
 
-    const botonMenu = $('.barra__menu', barra), nav = $('#navegacion', barra);
-    const abierto = function () { return botonMenu.getAttribute('aria-expanded') === 'true'; };
-    const abrirMenu = function (si) {
-      botonMenu.setAttribute('aria-expanded', String(si));
-      barra.classList.toggle('menu-abierto', si);
+  /* ---------- Titular: la palabra del servicio rueda letra por letra ---------- */
+
+  const rueda = $('[data-rueda]');
+  if (rueda && conMovimiento) {
+    const palabras = rueda.getAttribute('data-rueda').split('|');
+    let i = 0, timer = null, visible = true;
+    const armar = function (texto) {
+      const span = document.createElement('span');
+      span.className = 'hero__palabra';
+      texto.split('').forEach(function (c) {
+        const l = document.createElement('span');
+        l.className = 'letra';
+        l.textContent = c === ' ' ? ' ' : c;
+        span.appendChild(l);
+      });
+      return span;
     };
-    botonMenu.addEventListener('click', function () { abrirMenu(!abierto()); });
-    nav.addEventListener('click', function (e) { if (e.target.closest('a')) abrirMenu(false); });
-    // Escape cierra y devuelve el foco al botón si estaba en el menú
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape' || !abierto()) return;
-      const dentro = nav.contains(document.activeElement);
-      abrirMenu(false);
-      if (dentro) botonMenu.focus();
-    });
-    // También se cierra si el foco o un toque salen de la barra
-    barra.addEventListener('focusout', function (e) {
-      if (abierto() && e.relatedTarget && !barra.contains(e.relatedTarget)) abrirMenu(false);
-    });
-    document.addEventListener('click', function (e) {
-      if (abierto() && !barra.contains(e.target)) abrirMenu(false);
+    let actual = armar(palabras[0]);
+    rueda.replaceChildren(actual);
+    gsap.from(actual.children, { yPercent: 110, duration: 1.4, stagger: 0.03, delay: 0.15 });
+    const siguiente = function () {
+      i = (i + 1) % palabras.length;
+      const vieja = actual, nueva = armar(palabras[i]);
+      nueva.style.position = 'absolute';
+      nueva.style.left = '0';
+      nueva.style.top = '0';
+      rueda.style.position = 'relative';
+      rueda.appendChild(nueva);
+      gsap.to(vieja.children, { yPercent: -110, duration: 0.9, stagger: 0.022, ease: 'expo.inOut' });
+      gsap.fromTo(nueva.children, { yPercent: 110 }, {
+        yPercent: 0, duration: 0.9, stagger: 0.022, ease: 'expo.inOut', delay: 0.12,
+        onComplete: function () { vieja.remove(); nueva.style.position = ''; actual = nueva; }
+      });
+    };
+    const programar = function () { clearInterval(timer); if (visible && !document.hidden) timer = setInterval(siguiente, 2800); };
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; programar(); }).observe(rueda);
+    document.addEventListener('visibilitychange', programar);
+  }
+
+  /* ---------- Manifiesto, cartas y proceso con el scroll ---------- */
+
+  if (conMovimiento) {
+    const mm = gsap.matchMedia();
+
+    mm.add('(min-width: 821px)', function () {
+      // Cartas: la de abajo se achica y se apaga cuando la siguiente le pasa por encima
+      const cartas = $$('[data-cartas] .carta');
+      cartas.forEach(function (carta, k) {
+        const prox = cartas[k + 1];
+        if (!prox) return;
+        const cuerpo = $('.carta__cuerpo', carta);
+        gsap.to(carta, {
+          scale: 0.92, ease: 'none',
+          scrollTrigger: { trigger: prox, start: 'top bottom', end: 'top top+=80', scrub: true }
+        });
+        gsap.to(cuerpo, {
+          '--velo': 0.55, ease: 'none',
+          scrollTrigger: { trigger: prox, start: 'top 60%', end: 'top top+=80', scrub: true }
+        });
+      });
+
+      // Proceso: se fija y cada paso se enciende a su turno
+      const proceso = $('[data-proceso]');
+      if (proceso) {
+        const pasos = $$('.paso-p', proceso);
+        const barra = $('[data-proceso-barra]', proceso);
+        proceso.classList.add('con-pin');
+        ST.create({
+          trigger: proceso, start: 'top top+=' + Math.round(parseFloat(getComputedStyle(document.documentElement).fontSize) * 4.25),
+          end: '+=' + (pasos.length * 55) + '%', pin: $('.proceso__fijo', proceso), scrub: true,
+          onUpdate: function (self) {
+            const n = Math.min(pasos.length - 1, Math.floor(self.progress * pasos.length));
+            pasos.forEach(function (p, k) { p.classList.toggle('activo', k === n); p.classList.toggle('hecho', k < n); });
+            if (barra) barra.style.transform = 'scaleY(' + self.progress.toFixed(4) + ')';
+          }
+        });
+        return function () { proceso.classList.remove('con-pin'); };
+      }
     });
   }
 
-  /* ---------- Presupuesto: arma el mensaje en el cartel LED y abre WhatsApp ---------- */
+  /* ---------- Trabajos: la captura sigue al mouse y se recorre ---------- */
+
+  const finoMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  $$('.obra').forEach(function (obra) {
+    const media = $('[data-media]', obra), fila = $('.obra__fila', obra);
+    if (!media || !fila) return;
+    const img = $('img', media);
+    const recorrer = function (si) {
+      if (si && img.naturalHeight) {
+        const alto = media.clientHeight, total = img.getBoundingClientRect().height;
+        media.style.setProperty('--recorrido', Math.min(0, alto - total) + 'px');
+      }
+      media.classList.toggle('recorrer', si);
+    };
+    if (finoMouse) {
+      let raf = 0, ex = 0, ey = 0;
+      fila.addEventListener('pointerenter', function () { media.classList.add('activa'); recorrer(true); });
+      fila.addEventListener('pointerleave', function () { media.classList.remove('activa'); recorrer(false); });
+      fila.addEventListener('pointermove', function (e) {
+        ex = e.clientX; ey = e.clientY;
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0;
+          media.style.setProperty('--mx', ex + 'px');
+          media.style.setProperty('--my', ey + 'px');
+        });
+      });
+    } else {
+      // En táctil la captura va debajo de la fila y se recorre al tocarla
+      media.addEventListener('click', function () { recorrer(!media.classList.contains('recorrer')); });
+    }
+  });
+
+  /* ---------- Presupuesto: el asistente arma el mensaje y abre WhatsApp ---------- */
 
   const form = $('[data-quote]');
   if (form) {
@@ -138,124 +205,63 @@
       if (d) msg += '\n\n' + d;
       return msg;
     };
-    const chat = $('.chat');
-    const actualizar = function () {
-      vista.textContent = componer();
-      // Un mensaje cambiado vuelve a estar sin enviar
-      if (chat) chat.classList.remove('chat--enviado');
-    };
+    const actualizar = function () { vista.textContent = componer(); };
     form.addEventListener('input', actualizar);
     form.addEventListener('change', actualizar);
+
+    // Un paso por vez: Atrás, Siguiente y, al final, Abrir en WhatsApp
+    const pasos = $$('.paso', form), indice = $$('[data-indice]');
+    const atras = $('[data-atras]', form), siguiente = $('[data-siguiente]', form);
+    let actual = 0;
+    const mostrar = function (i, enfocar) {
+      actual = Math.max(0, Math.min(pasos.length - 1, i));
+      pasos.forEach(function (p, k) { p.classList.toggle('paso--actual', k === actual); });
+      indice.forEach(function (li, k) {
+        if (k === actual) li.setAttribute('aria-current', 'step');
+        else li.removeAttribute('aria-current');
+      });
+      form.classList.toggle('asistente--ultimo', actual === pasos.length - 1);
+      atras.disabled = actual === 0;
+      if (enfocar) {
+        const primero = $('input:checked, input, textarea', pasos[actual]);
+        if (primero) primero.focus();
+      }
+      if (ST) ST.refresh();
+    };
+    form.classList.add('asistente--pasos');
+    atras.addEventListener('click', function () { mostrar(actual - 1, true); });
+    siguiente.addEventListener('click', function () { mostrar(actual + 1, true); });
+    // Enter en un campo de texto avanza en vez de enviar antes de tiempo
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type === 'text' && actual < pasos.length - 1) {
+        e.preventDefault();
+        mostrar(actual + 1, true);
+      }
+    });
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       const url = WA + '?text=' + encodeURIComponent(componer());
       window.open(url, '_blank', 'noopener');
-      // La burbuja "se envía": sube, los tildes se vuelven celestes y Capitán salta
-      if (chat) {
-        chat.classList.remove('chat--enviado');
-        void chat.offsetWidth;
-        chat.classList.add('chat--enviado');
-      }
       estado.textContent = 'Listo: se abrió WhatsApp con tu mensaje. Si no lo ves, ';
       const a = document.createElement('a');
       a.href = url;
       a.target = '_blank';
       a.rel = 'noopener';
+      a.className = 'enlace';
       a.textContent = 'abrilo desde acá';
       estado.appendChild(a);
       estado.appendChild(document.createTextNode('.'));
     });
+
+    // Los "Pedir presupuesto" de cada servicio llegan con el servicio ya elegido
     $$('[data-preselect]').forEach(function (enlace) {
       enlace.addEventListener('click', function () {
         const r = $('input[name="servicio"][value="' + enlace.getAttribute('data-preselect') + '"]', form);
-        if (r) { r.checked = true; actualizar(); }
+        if (r) { r.checked = true; actualizar(); mostrar(1, false); }
       });
     });
+    mostrar(0, false);
     actualizar();
-  }
-
-  /* ---------- Inicio: la captura crece de tarjeta a pantalla completa ---------- */
-  // Versión en JS plano de ScrollExpandMedia (21st.dev), con sticky en lugar de frenar
-  // la rueda. Por cuadro solo cambian el recorte (clip-path) y transforms.
-  const inicio = $('[data-expande]');
-  if (inicio) {
-    const escena = $('.inicio__escena', inicio);
-    const media = $('[data-expande-media]', inicio);
-    const img = $('img', media);
-    const caso = $('[data-expande-caso]', inicio);
-    const izq = $$('[data-izq]', inicio);
-    const der = $$('[data-der]', inicio);
-    const suave = function (t) { return 1 - Math.pow(1 - t, 2); };
-    let W = 0, H = 0, w0 = 0, h0 = 0, tope = 0, celu = false, pedido = false;
-
-    const medir = function () {
-      const vw = escena.clientWidth;
-      const vh = escena.clientHeight;
-      celu = vw <= 760;
-      tope = parseFloat(getComputedStyle(escena).top) || 0;
-      W = Math.min(vw * (celu ? 1 : 0.95), 1560);
-      H = Math.min(vh * (celu ? 0.82 : 0.86), 940);
-      w0 = celu ? 236 : 300;
-      h0 = celu ? 300 : 380;
-      media.style.width = W + 'px';
-      media.style.height = H + 'px';
-    };
-    const pintar = function () {
-      pedido = false;
-      const r = inicio.getBoundingClientRect();
-      const p = acotar((tope - r.top) / Math.max(1, r.height - escena.clientHeight));
-      const e = suave(acotar(p / 0.7));
-      const c = acotar((p - 0.72) / 0.18);
-      const w = w0 + (W - w0) * e;
-      const h = h0 + (H - h0) * e;
-      const y = (H - h) / 2;
-      media.style.clipPath = 'inset(' + y.toFixed(1) + 'px ' + ((W - w) / 2).toFixed(1) + 'px round ' + (16 * (1 - e)).toFixed(1) + 'px)';
-      img.style.transform = 'translateY(' + y.toFixed(1) + 'px) scale(' + (w / W).toFixed(4) + ')';
-      const corre = e * (celu ? 110 : 100);
-      izq.forEach(function (n) { n.style.transform = 'translateX(' + (-corre).toFixed(2) + 'vw)'; });
-      der.forEach(function (n) { n.style.transform = 'translateX(' + corre.toFixed(2) + 'vw)'; });
-      inicio.style.setProperty('--e', e.toFixed(3));
-      inicio.style.setProperty('--c', c.toFixed(3));
-      // Mientras el caso no se ve, su botón no recibe foco
-      caso.style.visibility = c > 0.05 ? 'visible' : 'hidden';
-    };
-    const pedir = function () { if (!pedido) { pedido = true; requestAnimationFrame(pintar); } };
-    const alRedimensionar = function () { medir(); pintar(); };
-
-    const activar = function () {
-      if (quieto.matches) {
-        inicio.classList.remove('inicio--expande');
-        [media, img, caso].concat(izq, der).forEach(function (n) { n.removeAttribute('style'); });
-        inicio.removeAttribute('style');
-        window.removeEventListener('scroll', pedir);
-        window.removeEventListener('resize', alRedimensionar);
-        return;
-      }
-      inicio.classList.add('inicio--expande');
-      alRedimensionar();
-      window.addEventListener('scroll', pedir, { passive: true });
-      window.addEventListener('resize', alRedimensionar);
-    };
-    activar();
-    alCambiar(quieto, activar);
-  }
-
-  /* ---------- Cómo trabajo: la escalera se dibuja y cada numeral se estampa ---------- */
-  const escalera = $('.pasos__lista');
-  if (escalera && !quieto.matches && 'IntersectionObserver' in window) {
-    escalera.classList.add('pasos__lista--espera');
-    const vigia = new IntersectionObserver(function (es) {
-      if (!es[0].isIntersecting) return;
-      escalera.classList.add('pasos__lista--arma');
-      vigia.disconnect();
-    }, { rootMargin: '0px 0px -20% 0px' });
-    vigia.observe(escalera);
-  }
-
-  // La hora de la burbuja del chat es la del visitante
-  const hora = $('[data-hora]');
-  if (hora) {
-    const d = new Date();
-    hora.textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
   }
 })();

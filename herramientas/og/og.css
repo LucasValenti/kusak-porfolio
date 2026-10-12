@@ -1,0 +1,17 @@
+/* Solo para armar assets/og.png a 1200 × 630 */
+html, body { margin: 0; }
+body { width: 1200px; height: 630px; overflow: hidden; }
+.og { position: relative; width: 1200px; height: 630px; }
+.og img { image-rendering: pixelated; }
+.og__bienvenida { position: absolute; left: 48px; top: 40px; width: 640px; z-index: 2; }
+.og__bienvenida .ventana__cuerpo { padding: 28px 36px 36px; }
+.og__bienvenida .logo { margin-bottom: 28px; }
+.og h1 { font-size: 84px; max-width: 9ch; margin-bottom: 18px; }
+.og__bajada { margin: 0 0 24px; font-size: 22px; color: var(--texto-2); }
+.og .acciones { margin: 0; }
+.og__gea { position: absolute; left: 640px; top: 96px; width: 500px; z-index: 1; }
+.og__gea .captura { height: 380px; }
+.og__tareas { position: absolute; height: 48px; }
+.og__tareas .tareas__kusak img { width: 20px; height: 20px; }
+.og__hueco { flex: 1; }
+.og__tareas .tareas__wa { flex: none; }

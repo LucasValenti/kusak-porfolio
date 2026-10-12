@@ -1,9 +1,6 @@
-Copyright 2020 The Dela Gothic Project Authors (https://github.com/syakuzen/DelaGothic)
-Copyright 2021 The Zen Project Authors (https://github.com/googlefonts/zen-kakugothic)
-Copyright 2020 The Shippori Mincho Project Authors (https://github.com/fontdasu/ShipporiMincho)
+Copyright 2015 The Libre Franklin Project Authors (https://github.com/impallari/Libre-Franklin)
 
-Fuentes usadas en el sitio: Dela Gothic One, Zen Kaku Gothic New y Shippori Mincho (recortes de Google Fonts).
-
+Fuente usada en el sitio: Libre Franklin (recortes latinos de Google Fonts, normal e itálica).
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 https://scripts.sil.org/OFL
