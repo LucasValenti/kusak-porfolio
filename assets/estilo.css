@@ -641,6 +641,11 @@ main { position: relative; z-index: 1; background: var(--negro); }
 }
 
 
+/* Celular alto: las cartas vuelven a apilarse (JS desvanece la de abajo); con movimiento reducido no */
+@media (max-width: 820px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  .con-js .carta { position: sticky; top: calc(var(--cab) + 0.5rem); transform-origin: 50% 0; }
+}
+
 /* ---------- Movimiento reducido ---------- */
 
 @media (prefers-reduced-motion: reduce) {

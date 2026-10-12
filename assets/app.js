@@ -158,6 +158,21 @@
   if (conMovimiento) {
     const mm = gsap.matchMedia();
 
+    // Celular: las cartas se apilan con su alto natural; la de abajo se achica y se desvanece
+    // mientras sube la siguiente, así no asoma por debajo aunque sea más alta
+    mm.add('(max-width: 820px) and (min-height: 700px)', function () {
+      const cartas = $$('[data-cartas] .carta');
+      const tope = Math.round(parseFloat(getComputedStyle(document.documentElement).fontSize) * 3.75) + 8;
+      cartas.forEach(function (carta, k) {
+        const prox = cartas[k + 1];
+        if (!prox) return;
+        gsap.to(carta, {
+          scale: 0.9, opacity: 0, ease: 'none',
+          scrollTrigger: { trigger: prox, start: 'top 85%', end: 'top top+=' + tope, scrub: true }
+        });
+      });
+    });
+
     mm.add('(min-width: 821px)', function () {
       // Cartas: la de abajo se achica y se apaga cuando la siguiente le pasa por encima
       const cartas = $$('[data-cartas] .carta');
