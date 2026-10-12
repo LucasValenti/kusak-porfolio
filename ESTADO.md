@@ -35,6 +35,7 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 - [x] Commitear y publicar el rediseño (`9189b63`, kusak.dev, 2026-10-12)
 - [x] Fondo "Pulso" (líneas que se levantan en picos) y glitch de corte RGB en los botones, elegidos entre cinco fondos y tres glitch (2026-10-12)
 - [x] Fondo del inicio pasado a video en loop (render propio en `videos/hero/`): cuesta lo mismo que no tener fondo; se descartaron shader en vivo, Canvas 2D y SVG animado por consumo (2026-10-12)
+- [x] Consumo de placa: los videos eran la causa (composición de 309 a 52 ms en el hero y de 620 a 51 ms en Trabajos). Un solo video de trabajo a la vez, todos a 24 fps, sin `will-change` por letra ni desenfoque en la cabecera móvil (2026-10-12)
 - [x] Borradas las fuentes sin uso (Shippori Mincho, Zen Kaku Gothic) y `gea-escritorio-750.webp` (2026-10-12)
 
 ## Etapa 2 — Calidad · 15 %

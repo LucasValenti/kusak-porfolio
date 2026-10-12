@@ -251,7 +251,7 @@ main { position: relative; z-index: 1; background: var(--negro); }
 .hero__linea { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .hero__rueda { color: var(--acento); white-space: nowrap; }
 .hero__palabra { display: inline-block; }
-.hero__palabra .letra { display: inline-block; will-change: transform; }
+.hero__palabra .letra { display: inline-block; }
 
 .hero__etiquetas {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem;
@@ -553,7 +553,7 @@ main { position: relative; z-index: 1; background: var(--negro); }
 
 @media (max-width: 820px) {
   :root { --cab: 3.75rem; }
-  .cabecera { mix-blend-mode: normal; background: rgb(13 13 12 / 0.86); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); gap: 0.75rem; }
+  .cabecera { background: rgb(13 13 12 / 0.96); gap: 0.75rem; }
   .cabecera.sobre-claro { color: var(--hueso); }
   .nav {
     position: fixed; inset: var(--cab) 0 auto 0; margin: 0;

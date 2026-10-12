@@ -9,7 +9,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 ORIGEN = RAIZ / 'videos' / 'trabajos' / 'renders'
 DESTINO = RAIZ / 'assets' / 'trabajos'
-ESCALA = 'scale=1200:-2:flags=lanczos'
+ESCALA = 'fps=24,scale=1200:-2:flags=lanczos'
 
 
 def correr(*args):
