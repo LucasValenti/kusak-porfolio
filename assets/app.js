@@ -86,9 +86,18 @@
   const claras = $$('.tema-claro, .carta--acento, .carta--hueso, .carta--piedra');
   const principal = $('main');
   const debajo = new Set();
+  // "Sobre el pie" lo avisa un observador cuando el final del contenido pasa por debajo de la cabecera,
+  // así el scroll no tiene que medir la página en cada cuadro
+  let sobrePie = false;
   function tinta() {
-    const sobrePie = principal && principal.getBoundingClientRect().bottom < 64;
     if (cabecera) cabecera.classList.toggle('sobre-claro', debajo.size > 0 || sobrePie);
+  }
+  if (cabecera && principal && principal.lastElementChild && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      const e = es[0];
+      sobrePie = !e.isIntersecting && e.boundingClientRect.bottom < 64;
+      tinta();
+    }, { rootMargin: '-64px 0px 0px 0px' }).observe(principal.lastElementChild);
   }
   if (cabecera && 'IntersectionObserver' in window && claras.length) {
     const vigia = new IntersectionObserver(function (es) {
