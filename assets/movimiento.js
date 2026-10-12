@@ -63,15 +63,17 @@
 
   const animar = {
     lines: function (el) {
-      const s = window.SplitText.create(el, { type: 'lines', mask: 'lines', linesClass: 'linea', autoSplit: true,
+      // Sin etiqueta: un párrafo no puede llevar aria-label, y las líneas conservan el texto tal cual
+      const s = window.SplitText.create(el, { type: 'lines', mask: 'lines', linesClass: 'linea', autoSplit: true, aria: 'none',
         onSplit: function (self) {
           return alEntrar(el, self.lines, { yPercent: 105, duration: 1.3, stagger: 0.09 });
         } });
       return s;
     },
     chars: function (el) {
-      // Si el texto ya está oculto para lectores de pantalla, SplitText no le agrega etiqueta propia
-      const s = window.SplitText.create(el, { type: 'chars', charsClass: 'letra', aria: el.closest('[aria-hidden="true"]') ? 'none' : 'auto' });
+      // Si el texto ya está oculto para lectores de pantalla, SplitText no le agrega etiqueta propia.
+      // Palabras primero y letras adentro: así el renglón corta entre palabras y nunca a mitad de una
+      const s = window.SplitText.create(el, { type: 'words,chars', wordsClass: 'palabra-entera', charsClass: 'letra', aria: el.closest('[aria-hidden="true"]') ? 'none' : 'auto' });
       return gsap.from(s.chars, { yPercent: 110, duration: 1.4, stagger: 0.035, delay: Number(el.dataset.delay || 0) });
     },
     fade: function (el) {

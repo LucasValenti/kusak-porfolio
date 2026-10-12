@@ -35,7 +35,7 @@ def analitica(html):
         raise SystemExit('herramientas/analitica.local no tiene un identificador válido')
     cambios = [
         ("script-src 'self'", "script-src 'self' https://static.cloudflareinsights.com"),
-        ("connect-src 'none'", 'connect-src https://cloudflareinsights.com'),
+        ("connect-src 'self'", "connect-src 'self' https://cloudflareinsights.com"),
         ('</body>', '  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
                     'data-cf-beacon=\'{"token": "%s"}\'></script>\n</body>' % token),
     ]

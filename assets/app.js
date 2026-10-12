@@ -98,6 +98,17 @@
     claras.forEach(function (el) { vigia.observe(el); });
   }
 
+  /* ---------- Pie: se pinta recién cuando el final de la página está a una pantalla ---------- */
+
+  const ultimaSeccion = principal && principal.lastElementChild;
+  if (ultimaSeccion && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) document.documentElement.classList.add('pie-cerca');
+    }, { rootMargin: '0px 0px 100% 0px' }).observe(ultimaSeccion);
+  } else {
+    document.documentElement.classList.add('pie-cerca');
+  }
+
   /* ---------- Sección activa en la nav ---------- */
 
   const secciones = $$('[data-seccion]');

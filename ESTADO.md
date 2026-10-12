@@ -42,7 +42,11 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 
 ## Etapa 2 — Calidad · 15 %
 - [x] Auditoría: datos estructurados, security.txt, SŌ accesible y medición opcional
-- [ ] Volver a auditar después del rediseño del 2026-10-12 → anthropic-skills:auditoria-web
+- [x] Volver a auditar después del rediseño del 2026-10-12 → anthropic-skills:auditoria-web (8,1/10)
+- [x] Arreglos rápidos de la auditoría: titular partido por palabras, foco en zonas claras, `connect-src 'self'`, pie oculto hasta el final, `aria: 'hidden'`, descripción y canonical
+- [ ] SPF `-all` y DMARC `p=reject` en el DNS de Cloudflare [PENDIENTE: confirmar]
+- [ ] Cinta de luz diferida al `load` y conteo de clics a WhatsApp desde el worker
+- [ ] Preguntas frecuentes con `FAQPage`
 
 ## Etapa 3 — Dominio y publicación · 20 %
 - [x] kusak.dev en wrangler, y www y workers.dev redirigen al dominio (`wrangler.jsonc`, `worker.js`)

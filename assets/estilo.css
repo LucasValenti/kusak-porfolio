@@ -95,6 +95,10 @@ a { color: inherit; }
 button, input, textarea { font: inherit; color: inherit; }
 ::selection { background: var(--acento); color: var(--sobre-acento); }
 :focus-visible { outline: 2px solid var(--acento); outline-offset: 3px; border-radius: 2px; }
+/* Sobre fondo claro el amarillo no llega a 3:1: ahí el foco va en negro */
+.tema-claro :focus-visible, .cabecera.sobre-claro :focus-visible,
+.carta--acento :focus-visible, .carta--hueso :focus-visible, .carta--piedra :focus-visible { outline-color: var(--negro); }
+.palabra-entera { display: inline-block; white-space: nowrap; }
 html { scrollbar-color: var(--grafito) var(--negro); scrollbar-width: thin; }
 
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -510,7 +514,12 @@ main { position: relative; z-index: 1; background: var(--negro); }
 }
 .pie__fila { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: 0.875rem; font-weight: 600; }
 .pie__links { display: flex; gap: 1.5rem; }
-.pie a { text-underline-offset: 0.25em; }
+.pie a { text-underline-offset: 0.25em; display: inline-block; padding-block: 0.35rem; }
+.pie :focus-visible { outline-color: var(--negro); }
+/* El pie vive detrás de la página: hasta que el contenido no está por terminar no se pinta
+   (si no, el navegador lo dibuja al cargar y lo toma como el elemento principal de la pantalla) */
+.con-js .pie:not(.pie--simple) { visibility: hidden; }
+.con-js.pie-cerca .pie { visibility: visible; }
 
 /* ---------- Menú de celular: campo amarillo a pantalla completa ---------- */
 
