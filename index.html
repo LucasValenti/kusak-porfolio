@@ -52,31 +52,44 @@
 
   <header class="cabecera" data-cabecera>
     <a class="marca" href="#inicio" aria-label="KUSAK, ir al inicio">KUSAK</a>
-    <nav class="nav" id="nav" aria-label="Secciones">
+    <nav class="nav" aria-label="Secciones">
       <ul role="list">
         <li><a href="#inicio" data-nav="inicio">Inicio</a></li>
         <li><a href="#servicios" data-nav="servicios">Servicios</a></li>
         <li><a href="#trabajos" data-nav="trabajos">Trabajos</a></li>
-        <li><a href="#como-trabajo" data-nav="como-trabajo">Cómo trabajo</a></li>
         <li><a href="#presupuesto" data-nav="presupuesto">Presupuesto</a></li>
       </ul>
     </nav>
     <a class="pildora" href="https://wa.me/5493415000651?text=Hola%2C%20Lucas.%20Vi%20tu%20web%20y%20quiero%20hacerte%20una%20consulta." target="_blank" rel="noopener" data-iman>
-      <svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span><span class="sr-only"> (se abre WhatsApp)</span>
+      <svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg><span class="pildora__txt">WhatsApp</span><span class="sr-only"> (se abre WhatsApp)</span>
     </a>
-    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav" data-menu><span class="menu-boton__txt">Menú</span></button>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-movil" data-menu>
+      <span class="menu-boton__icono" aria-hidden="true"><span></span><span></span></span>
+      <span class="menu-boton__txt" data-menu-txt>Menú</span>
+    </button>
   </header>
+
+  <!-- Menú de celular: un campo amarillo a pantalla completa -->
+  <div class="menu-movil" id="menu-movil" role="dialog" aria-modal="true" aria-label="Menú" hidden data-menu-movil>
+    <nav class="menu-movil__nav" aria-label="Secciones">
+      <ul role="list">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#trabajos">Trabajos</a></li>
+        <li><a href="#presupuesto">Presupuesto</a></li>
+      </ul>
+    </nav>
+    <div class="menu-movil__pie">
+      <a class="boton boton--tinta boton--ancho" href="https://wa.me/5493415000651?text=Hola%2C%20Lucas.%20Vi%20tu%20web%20y%20quiero%20hacerte%20una%20consulta." target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>Escribime por WhatsApp<span class="sr-only"> (se abre WhatsApp)</span></a>
+      <p class="menu-movil__datos"><span>WhatsApp 341 500-0651</span><span>Rosario, AR · <time data-reloj>--:--</time></span></p>
+    </div>
+  </div>
 
 
   <main id="contenido">
 
     <section class="hero" id="inicio" aria-labelledby="titulo" data-seccion="inicio">
-      <video class="hero__campo" muted loop playsinline preload="auto" poster="assets/hero/pulso-poster.webp" width="1920" height="1080" aria-hidden="true" data-campo>
-        <source src="assets/hero/pulso-vertical.webm" type="video/webm" media="(max-aspect-ratio: 1/1)">
-        <source src="assets/hero/pulso-vertical.mp4" type="video/mp4" media="(max-aspect-ratio: 1/1)">
-        <source src="assets/hero/pulso.webm" type="video/webm">
-        <source src="assets/hero/pulso.mp4" type="video/mp4">
-      </video>
+      <canvas class="hero__campo" aria-hidden="true" data-campo></canvas>
       <div class="hero__cuerpo">
         <h1 class="hero__titulo" id="titulo">
           <span class="sr-only">Hago páginas web, tiendas online, sistemas y asistentes con IA para tu negocio.</span>
@@ -256,27 +269,18 @@
       </ul>
     </section>
 
-    <section class="proceso" id="como-trabajo" aria-labelledby="proceso-t" data-seccion="como-trabajo" data-proceso>
-      <div class="proceso__fijo">
-        <div class="proceso__cab">
-          <h2 class="seccion-cab__t" id="proceso-t" data-anim="lines">Cómo trabajo</h2>
-          <p class="seccion-cab__lema" data-anim="lines">Hablás conmigo de principio a fin, sin intermediarios.</p>
-        </div>
-        <ol class="pasos" role="list">
-          <li class="paso-p"><span class="paso-p__n" aria-hidden="true">1</span><div><h3>Me escribís</h3><p>Por WhatsApp me contás de tu negocio y qué necesitás.</p></div></li>
-          <li class="paso-p"><span class="paso-p__n" aria-hidden="true">2</span><div><h3>Te paso un presupuesto</h3><p>Con lo que charlamos, te digo qué incluye y cuánto sale.</p></div></li>
-          <li class="paso-p"><span class="paso-p__n" aria-hidden="true">3</span><div><h3>Diseño y armo tu proyecto</h3><p>Pensado para tu negocio y con tu información.</p></div></li>
-          <li class="paso-p"><span class="paso-p__n" aria-hidden="true">4</span><div><h3>Lo pongo en marcha</h3><p>Lo dejo funcionando y, si querés, me quedo a cargo del mantenimiento.</p></div></li>
-        </ol>
-        <div class="proceso__barra" aria-hidden="true"><span data-proceso-barra></span></div>
-      </div>
-    </section>
-
     <section class="presupuesto" id="presupuesto" aria-labelledby="presupuesto-t" data-seccion="presupuesto">
       <header class="seccion-cab">
         <h2 class="seccion-cab__t" id="presupuesto-t" data-anim="lines">Pedir presupuesto</h2>
         <p class="seccion-cab__lema" data-anim="lines">Contame qué necesitás y te armo el mensaje para WhatsApp. Lo revisás y lo mandás vos.</p>
       </header>
+
+      <ol class="recorrido" id="como-trabajo" role="list" aria-label="Cómo trabajo" data-anim="fade">
+        <li><span class="recorrido__n" aria-hidden="true">1</span><h3>Me escribís</h3><p>Me contás de tu negocio y qué necesitás.</p></li>
+        <li><span class="recorrido__n" aria-hidden="true">2</span><h3>Te paso un presupuesto</h3><p>Qué incluye y cuánto sale, antes de empezar.</p></li>
+        <li><span class="recorrido__n" aria-hidden="true">3</span><h3>Diseño y armo</h3><p>Pensado para tu negocio, con tu información.</p></li>
+        <li><span class="recorrido__n" aria-hidden="true">4</span><h3>Lo pongo en marcha</h3><p>Y si querés, me quedo con el mantenimiento.</p></li>
+      </ol>
 
       <div class="asistente">
         <ol class="asistente__indice" role="list" aria-label="Pasos del asistente">
@@ -363,6 +367,7 @@
   <script src="assets/vendor/SplitText.min.js" defer></script>
   <script src="assets/vendor/lenis.min.js" defer></script>
   <script src="assets/movimiento.js" defer></script>
+  <script src="assets/campo.js" defer></script>
   <script src="assets/app.js" defer></script>
 </body>
 </html>

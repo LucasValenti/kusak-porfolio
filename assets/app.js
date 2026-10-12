@@ -11,42 +11,89 @@
 
   /* ---------- Hora de Rosario ---------- */
 
-  const reloj = $('[data-reloj]');
-  if (reloj) {
+  const relojes = $$('[data-reloj]');
+  if (relojes.length) {
     const fmt = new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Cordoba' });
     const tic = function () {
-      const d = new Date();
-      reloj.textContent = fmt.format(d);
-      reloj.setAttribute('datetime', d.toISOString());
+      const d = new Date(), txt = fmt.format(d);
+      relojes.forEach(function (r) { r.textContent = txt; r.setAttribute('datetime', d.toISOString()); });
     };
     tic();
     setInterval(tic, 15000);
   }
 
-  /* ---------- Menú en celular ---------- */
+  /* ---------- Menú en celular: campo amarillo a pantalla completa ---------- */
 
-  const menu = $('[data-menu]'), nav = $('#nav');
-  if (menu && nav) {
-    const cerrar = function () { nav.classList.remove('abierta'); menu.setAttribute('aria-expanded', 'false'); };
-    menu.addEventListener('click', function () {
-      const abrir = !nav.classList.contains('abierta');
-      nav.classList.toggle('abierta', abrir);
+  const menu = $('[data-menu]'), panel = $('[data-menu-movil]'), menuTxt = $('[data-menu-txt]');
+  if (menu && panel) {
+    let abierto = false;
+    const enfocables = function () { return $$('a, button', panel).concat([menu]); };
+    const poner = function (abrir) {
+      abierto = abrir;
       menu.setAttribute('aria-expanded', String(abrir));
-      if (abrir) { const a = $('a', nav); if (a) a.focus(); }
+      menuTxt.textContent = abrir ? 'Cerrar' : 'Menú';
+      document.documentElement.classList.toggle('menu-abierto', abrir);
+      if (K.lenis) { if (abrir) K.lenis.stop(); else K.lenis.start(); }
+      if (abrir) {
+        panel.hidden = false;
+        requestAnimationFrame(function () { panel.classList.add('abierto'); });
+        const a = $('a', panel); if (a) a.focus({ preventScroll: true });
+      } else {
+        panel.classList.remove('abierto');
+        setTimeout(function () { if (!abierto) panel.hidden = true; }, 450);
+      }
+    };
+    menu.addEventListener('click', function () { poner(!abierto); });
+    panel.addEventListener('click', function (e) { if (e.target.closest('a')) poner(false); });
+    document.addEventListener('keydown', function (e) {
+      if (!abierto) return;
+      if (e.key === 'Escape') { poner(false); menu.focus(); return; }
+      // El foco no se escapa del menú mientras está abierto
+      if (e.key === 'Tab') {
+        const lista = enfocables(), primero = lista[0], ultimo = lista[lista.length - 1];
+        if (e.shiftKey && document.activeElement === primero) { e.preventDefault(); ultimo.focus(); }
+        else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
+      }
     });
-    nav.addEventListener('click', function (e) { if (e.target.closest('a')) cerrar(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('abierta')) { cerrar(); menu.focus(); } });
+    window.matchMedia('(min-width: 821px)').addEventListener('change', function (m) { if (m.matches && abierto) poner(false); });
+  }
+
+  /* ---------- Cabecera: se esconde al bajar, vuelve al subir y toma fondo fuera del inicio ---------- */
+
+  const barra = $('[data-cabecera]');
+  if (barra) {
+    let ultimaY = window.scrollY, pendiente = false;
+    const revisar = function () {
+      pendiente = false;
+      const y = window.scrollY;
+      if (!document.documentElement.classList.contains('menu-abierto')) {
+        barra.classList.toggle('escondida', y > ultimaY && y > 160);
+      }
+      barra.classList.toggle('con-fondo', y > 40);
+      tinta();
+      ultimaY = y;
+    };
+    window.addEventListener('scroll', function () { if (!pendiente) { pendiente = true; requestAnimationFrame(revisar); } }, { passive: true });
+    barra.addEventListener('focusin', function () { barra.classList.remove('escondida'); });
+    // La primera revisión va al cuadro siguiente: para entonces ya existe la función de tinta
+    requestAnimationFrame(revisar);
   }
 
   /* ---------- Cabecera: cambia de tinta sobre las zonas claras ---------- */
 
   const cabecera = $('[data-cabecera]');
-  const claras = $$('.tema-claro, .pie, .carta--acento, .carta--hueso, .carta--piedra');
+  // El pie amarillo vive detrás de la página: cuenta como zona clara solo cuando el contenido ya terminó
+  const claras = $$('.tema-claro, .carta--acento, .carta--hueso, .carta--piedra');
+  const principal = $('main');
+  const debajo = new Set();
+  function tinta() {
+    const sobrePie = principal && principal.getBoundingClientRect().bottom < 64;
+    if (cabecera) cabecera.classList.toggle('sobre-claro', debajo.size > 0 || sobrePie);
+  }
   if (cabecera && 'IntersectionObserver' in window && claras.length) {
-    const debajo = new Set();
     const vigia = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) debajo.add(e.target); else debajo.delete(e.target); });
-      cabecera.classList.toggle('sobre-claro', debajo.size > 0);
+      tinta();
     }, { rootMargin: '0px 0px -94% 0px' });
     claras.forEach(function (el) { vigia.observe(el); });
   }
@@ -106,7 +153,7 @@
     document.addEventListener('visibilitychange', programar);
   }
 
-  /* ---------- Manifiesto, cartas y proceso con el scroll ---------- */
+  /* ---------- Cartas con el scroll ---------- */
 
   if (conMovimiento) {
     const mm = gsap.matchMedia();
@@ -128,34 +175,7 @@
         });
       });
 
-      // Proceso: se fija y cada paso se enciende a su turno
-      const proceso = $('[data-proceso]');
-      if (proceso) {
-        const pasos = $$('.paso-p', proceso);
-        const barra = $('[data-proceso-barra]', proceso);
-        proceso.classList.add('con-pin');
-        ST.create({
-          trigger: proceso, start: 'top top+=' + Math.round(parseFloat(getComputedStyle(document.documentElement).fontSize) * 4.25),
-          end: '+=' + (pasos.length * 55) + '%', pin: $('.proceso__fijo', proceso), scrub: true,
-          onUpdate: function (self) {
-            const n = Math.min(pasos.length - 1, Math.floor(self.progress * pasos.length));
-            pasos.forEach(function (p, k) { p.classList.toggle('activo', k === n); p.classList.toggle('hecho', k < n); });
-            if (barra) barra.style.transform = 'scaleY(' + self.progress.toFixed(4) + ')';
-          }
-        });
-        return function () { proceso.classList.remove('con-pin'); };
-      }
     });
-  }
-
-  /* ---------- Fondo del inicio: el video del pulso corre solo mientras se ve ---------- */
-
-  const campo = $('[data-campo]');
-  if (campo && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    new IntersectionObserver(function (es) {
-      if (es[0].isIntersecting) { const p = campo.play(); if (p && p.catch) p.catch(function () {}); }
-      else campo.pause();
-    }).observe(campo);
   }
 
   /* ---------- Trabajos: un solo video a la vez, para no cargar la placa ----------
