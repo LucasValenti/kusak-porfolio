@@ -32,12 +32,12 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 - [x] Videos de trabajos con HyperFrames (`videos/trabajos/`, `herramientas/videos-trabajos.py`): GEA y Muebles en loop en la sección Trabajos (2026-10-12)
 - [x] 404, privacidad y og.png en el sistema nuevo (2026-10-12)
 - [x] Revisión final (ship tras 2 rondas de correcciones) y DESIGN.md nuevo (2026-10-12)
-- [ ] Commitear y publicar el rediseño
+- [x] Commitear y publicar el rediseño (`9189b63`, kusak.dev, 2026-10-12)
 - [x] Borradas las fuentes sin uso (Shippori Mincho, Zen Kaku Gothic) y `gea-escritorio-750.webp` (2026-10-12)
 
 ## Etapa 2 — Calidad · 15 %
 - [x] Auditoría: datos estructurados, security.txt, SŌ accesible y medición opcional
-- [ ] Volver a auditar después de los cambios del 2026-10-10 → anthropic-skills:auditoria-web
+- [ ] Volver a auditar después del rediseño del 2026-10-12 → anthropic-skills:auditoria-web
 
 ## Etapa 3 — Dominio y publicación · 20 %
 - [x] kusak.dev en wrangler, y www y workers.dev redirigen al dominio (`wrangler.jsonc`, `worker.js`)
