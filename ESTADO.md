@@ -44,7 +44,7 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 - [x] Auditoría: datos estructurados, security.txt, SŌ accesible y medición opcional
 - [x] Volver a auditar después del rediseño del 2026-10-12 → anthropic-skills:auditoria-web (8,1/10)
 - [x] Arreglos rápidos de la auditoría: titular partido por palabras, foco en zonas claras, `connect-src 'self'`, pie oculto hasta el final, `aria: 'hidden'`, descripción y canonical
-- [ ] SPF `-all` y DMARC `p=reject` en el DNS de Cloudflare [PENDIENTE: confirmar]
+- [x] SPF `-all` y DMARC `p=reject` en el DNS de Cloudflare (2026-10-12)
 - [x] Cinta de luz diferida al `load`, letra agrandada sin desbordes, cabecera con observadores y colores en tokens (auditoría de Impeccable)
 - [ ] Conteo de clics a WhatsApp desde el worker
 - [ ] Decidir si el titular del inicio se muestra sin esperar al JS (la carga principal en celular queda en 3 s por la entrada letra por letra)
