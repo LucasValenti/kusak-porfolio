@@ -1,9 +1,11 @@
 """Pasa los renders de videos/trabajos a versiones livianas para la web.
 
 Por cada trabajo deja en assets/trabajos/: <nombre>.mp4 (H.264), <nombre>.webm (VP9)
-y <nombre>-poster.webp (primer cuadro). Uso: python herramientas/videos-trabajos.py
+y <nombre>-poster.webp (primer cuadro). Uso: python herramientas/videos-trabajos.py [nombre ...]
+(sin nombres, todos los renders)
 """
 import subprocess
+import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -18,6 +20,8 @@ def correr(*args):
 
 for render in sorted(ORIGEN.glob('*.mp4')):
     nombre = render.stem
+    if sys.argv[1:] and nombre not in sys.argv[1:]:
+        continue
     correr('-i', str(render), '-vf', ESCALA, '-c:v', 'libx264', '-preset', 'slow', '-crf', '27',
            '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', str(DESTINO / f'{nombre}.mp4'))
     correr('-i', str(render), '-vf', ESCALA, '-c:v', 'libvpx-vp9', '-crf', '36', '-b:v', '0',

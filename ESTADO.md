@@ -45,7 +45,7 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 - [x] Volver a auditar después del rediseño del 2026-10-12 → anthropic-skills:auditoria-web (8,1/10)
 - [x] Arreglos rápidos de la auditoría: titular partido por palabras, foco en zonas claras, `connect-src 'self'`, pie oculto hasta el final, `aria: 'hidden'`, descripción y canonical
 - [x] SPF `-all` y DMARC `p=reject` en el DNS de Cloudflare (2026-10-12)
-- [x] Cinta de luz diferida al `load`, letra agrandada sin desbordes, cabecera con observadores y colores en tokens (auditoría de Impeccable)
+- [x] Cinta de luz diferida al `load`, letra agrandada sin desbordes, cabecera con observadores y colores en tokens (auditoría de diseño)
 - [ ] Conteo de clics a WhatsApp desde el worker
 - [ ] Decidir si el titular del inicio se muestra sin esperar al JS (la carga principal en celular queda en 3 s por la entrada letra por letra)
 - [ ] Preguntas frecuentes con `FAQPage`
@@ -65,8 +65,8 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 ## Etapa 5 — Trabajos · 10 %
 - [x] Trabajos reales con capturas propias (`assets/trabajos/`)
 - [x] Capturas de GEA actualizadas desde el sitio en vivo, más una de 750 px para el inicio en celular (2026-10-11)
-- [ ] Sumar stock hogar a Trabajos con capturas de datos de ejemplo → caso-de-estudio
-- [ ] Reemplazar la captura de la carpintería que usa fotos de Pinterest
+- [x] Sumar Stock del hogar a Trabajos como proyecto propio, con video de tres celulares y una casa de ejemplo (2026-10-12)
+- [x] Reemplazar la captura de la carpintería que usa fotos de Pinterest (se deja como está por decisión de Lucas, 2026-10-12)
 
 ## Etapa 6 — Demo de tienda · 15 %
 - [x] `demo-tienda/`: Barranca, tienda ficticia marcada como demo, con grilla, ficha con View Transitions y carrito (2026-10-12)
