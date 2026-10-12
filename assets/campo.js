@@ -29,6 +29,8 @@
     ' float f=fbm(uv*1.4+q*1.8+vec2(t*.6,-t*.3));',
     ' float d=distance(uv,uM/uGrid.y);',
     ' float halo=exp(-d*d*9.)*uMf;',
+    // El halo se apaga en la franja de abajo, donde hay texto chico
+    ' halo*=smoothstep(.3,.62,gl_FragCoord.y/uGrid.y);',
     ' float v=smoothstep(.38,.92,f)+halo*.55;',
     ' v*=1.-.5*clamp(gl_FragCoord.y/uGrid.y,0.,1.);',
     ' gl_FragColor=vec4(v,clamp(halo*1.4,0.,1.),0.,1.);',

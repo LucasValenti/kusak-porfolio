@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es" class="sin-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-1IuFhkAhEqjbGin3/+XDf/ameYQv1XwPI21SvdhJFh8='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex">
+  <title>Barranca · Demo de tienda online | KUSAK</title>
+  <meta name="description" content="Demo de tienda online hecha por KUSAK: una marca ficticia de mates de cerámica, con catálogo, vista de producto y carrito.">
+  <meta name="theme-color" content="#e9e1d2">
+  <link rel="icon" href="../assets/marca/kusak-icono.svg" type="image/svg+xml">
+  <script>
+    (function (r) { r.className = 'con-js'; })(document.documentElement);
+  </script>
+  <link rel="preload" href="../assets/fonts/libre-franklin-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="tienda.css">
+</head>
+<body>
+  <a class="saltar" href="#catalogo">Saltar al catálogo</a>
+
+  <p class="aviso-demo">
+    <span><strong>Demo de KUSAK.</strong> Barranca es una tienda ficticia: los productos, las fotos y los precios son de ejemplo y no se vende nada.</span>
+    <a href="/">Volver a kusak.dev</a>
+  </p>
+
+  <header class="t-cab">
+    <a class="t-marca" href="#inicio">Barranca</a>
+    <nav class="t-nav" aria-label="Secciones">
+      <a href="#mates">Mates</a>
+      <a href="#accesorios">Accesorios</a>
+      <a href="#taller">El taller</a>
+    </nav>
+    <button class="t-carrito" type="button" aria-haspopup="dialog" data-abrir-carrito>Carrito <span class="t-carrito__n" data-cuenta>0</span><span class="sr-only"> productos</span></button>
+  </header>
+
+  <main id="contenido">
+    <section class="t-hero" id="inicio" aria-labelledby="t-hero-t">
+      <img class="t-hero__foto" src="assets/img/portada-1600.webp" srcset="assets/img/portada-960.webp 960w, assets/img/portada-1600.webp 1600w" sizes="100vw" width="1600" height="900" fetchpriority="high" alt="Cinco mates de cerámica de colores sobre una mesa de madera, frente a una ventana con el río." data-hero-foto>
+      <div class="t-hero__texto">
+        <h1 class="t-hero__t" id="t-hero-t" data-anim="lines">Barro del Paraná para el mate de todos los días.</h1>
+        <p class="t-hero__bajada" data-anim="fade">Mates y accesorios de cerámica hechos a mano, uno por uno.</p>
+        <a class="t-boton" href="#mates"><span class="rodar" data-texto="Ver los mates">Ver los mates</span></a>
+      </div>
+    </section>
+
+    <div class="t-cinta" aria-hidden="true">
+      <div class="t-cinta__pista">
+        <span>Hecho a mano</span><span>Cada pieza es única</span><span>Esmaltes sin plomo</span><span>Envíos a todo el país</span>
+        <span>Hecho a mano</span><span>Cada pieza es única</span><span>Esmaltes sin plomo</span><span>Envíos a todo el país</span>
+      </div>
+    </div>
+
+    <div id="catalogo">
+      <section class="t-seccion" id="mates" aria-labelledby="mates-t">
+        <header class="t-seccion__cab">
+          <h2 id="mates-t" data-anim="lines">Mates</h2>
+          <p data-anim="lines">Cuatro esmaltes, la misma panza redonda.</p>
+        </header>
+        <ul class="grilla" role="list">
+          <li class="producto" data-slug="mate-barranca" data-nombre="Mate Barranca" data-precio="18500" data-variante="Amarillo maíz" data-desc="Cerámica esmaltada en amarillo maíz. El esmalte se junta más oscuro en el borde, así que no hay dos iguales.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/mate-barranca-540.webp" srcset="assets/img/mate-barranca-540.webp 540w, assets/img/mate-barranca-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Mate Barranca</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Mate Barranca al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Mate Barranca</span><span class="producto__precio">$ 18.500</span></h3>
+            <p class="producto__variante">Amarillo maíz</p>
+          </li>
+          <li class="producto" data-slug="mate-parana" data-nombre="Mate Paraná" data-precio="18500" data-variante="Verde río" data-desc="Esmalte celadón verde, con chorreados suaves. Panza redonda que se acomoda en la mano.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/mate-parana-540.webp" srcset="assets/img/mate-parana-540.webp 540w, assets/img/mate-parana-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Mate Paraná</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Mate Paraná al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Mate Paraná</span><span class="producto__precio">$ 18.500</span></h3>
+            <p class="producto__variante">Verde río</p>
+          </li>
+          <li class="producto" data-slug="mate-ladrillo" data-nombre="Mate Ladrillo" data-precio="15900" data-variante="Terracota" data-desc="Barro rojo sin esmaltar por fuera, con las marcas del torno a la vista. Curado por dentro.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/mate-ladrillo-540.webp" srcset="assets/img/mate-ladrillo-540.webp 540w, assets/img/mate-ladrillo-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Mate Ladrillo</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Mate Ladrillo al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Mate Ladrillo</span><span class="producto__precio">$ 15.900</span></h3>
+            <p class="producto__variante">Terracota</p>
+          </li>
+          <li class="producto" data-slug="mate-noche" data-nombre="Mate Noche" data-precio="19900" data-variante="Negro satinado" data-desc="Esmalte negro satinado con el borde moteado en blanco. El más pedido para regalar.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/mate-noche-540.webp" srcset="assets/img/mate-noche-540.webp 540w, assets/img/mate-noche-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Mate Noche</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Mate Noche al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Mate Noche</span><span class="producto__precio">$ 19.900</span></h3>
+            <p class="producto__variante">Negro satinado</p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="t-seccion" id="accesorios" aria-labelledby="acc-t">
+        <header class="t-seccion__cab">
+          <h2 id="acc-t" data-anim="lines">Accesorios</h2>
+          <p data-anim="lines">Lo que acompaña a la ronda.</p>
+        </header>
+        <ul class="grilla" role="list">
+          <li class="producto" data-slug="yerbera" data-nombre="Yerbera de cerámica" data-precio="24500" data-variante="Avena moteada" data-desc="Cerámica blanca moteada con tapa de madera. Entra medio kilo de yerba.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/yerbera-540.webp" srcset="assets/img/yerbera-540.webp 540w, assets/img/yerbera-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Yerbera de cerámica</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Yerbera de cerámica al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Yerbera de cerámica</span><span class="producto__precio">$ 24.500</span></h3>
+            <p class="producto__variante">Avena moteada</p>
+          </li>
+          <li class="producto" data-slug="bombilla" data-nombre="Bombilla pico de loro" data-precio="12900" data-variante="Alpaca" data-desc="Alpaca pulida con pico curvo y filtro redondo que no se tapa.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/bombilla-540.webp" srcset="assets/img/bombilla-540.webp 540w, assets/img/bombilla-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Bombilla pico de loro</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Bombilla pico de loro al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Bombilla pico de loro</span><span class="producto__precio">$ 12.900</span></h3>
+            <p class="producto__variante">Alpaca</p>
+          </li>
+          <li class="producto" data-slug="jarro" data-nombre="Jarro Bajada" data-precio="16500" data-variante="Amarillo y barro" data-desc="Mitad esmaltado, mitad barro crudo. Para el café de la mañana o el cocido.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/jarro-540.webp" srcset="assets/img/jarro-540.webp 540w, assets/img/jarro-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Jarro Bajada</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Jarro Bajada al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Jarro Bajada</span><span class="producto__precio">$ 16.500</span></h3>
+            <p class="producto__variante">Amarillo y barro</p>
+          </li>
+          <li class="producto" data-slug="posamate" data-nombre="Posamate de algarrobo" data-precio="9800" data-variante="Madera" data-desc="Algarrobo macizo con el centro tallado para que el mate no se vuelque.">
+            <div class="producto__marco">
+              <button class="producto__abrir" type="button" aria-haspopup="dialog"><img src="assets/img/posamate-540.webp" srcset="assets/img/posamate-540.webp 540w, assets/img/posamate-900.webp 900w" sizes="(max-width: 900px) 50vw, 25vw" width="540" height="720" loading="lazy" decoding="async" alt=""><span class="sr-only">Ver Posamate de algarrobo</span></button>
+              <button class="producto__agregar" type="button" data-agregar><span class="rodar" data-texto="Agregar">Agregar</span><span class="sr-only"> Posamate de algarrobo al carrito</span></button>
+            </div>
+            <h3 class="producto__datos"><span class="producto__nombre">Posamate de algarrobo</span><span class="producto__precio">$ 9.800</span></h3>
+            <p class="producto__variante">Madera</p>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="t-taller" id="taller" aria-labelledby="taller-t">
+      <div class="t-taller__foto"><img src="assets/img/detalle-900.webp" srcset="assets/img/detalle-540.webp 540w, assets/img/detalle-900.webp 900w" sizes="(max-width: 800px) 100vw, 45vw" width="900" height="1200" loading="lazy" decoding="async" alt="Primer plano de un mate amarillo con yerba espumosa y la bombilla." data-paralaje></div>
+      <div class="t-taller__texto">
+        <h2 id="taller-t" data-anim="lines">El esmalte se junta en el borde.</h2>
+        <p data-anim="lines">Cada mate pasa dos veces por el horno. En la segunda, el esmalte baja y se acumula donde la pieza se curva: por eso el borde queda más oscuro y ninguno sale igual al otro.</p>
+      </div>
+    </section>
+
+    <section class="t-kusak" aria-labelledby="kusak-t">
+      <h2 id="kusak-t">¿Querés una tienda así para tu negocio?</h2>
+      <p>Esta demo la diseñé y la programé yo, Lucas, de KUSAK. La tuya va con tus productos, tus precios y tus medios de pago.</p>
+      <a class="t-boton t-boton--negro" href="https://wa.me/5493415000651?text=Hola%2C%20Lucas.%20Vi%20la%20demo%20de%20tienda%20y%20quiero%20una%20para%20mi%20negocio." target="_blank" rel="noopener"><span class="rodar" data-texto="Escribime por WhatsApp">Escribime por WhatsApp</span><span class="sr-only"> (se abre WhatsApp)</span></a>
+    </section>
+  </main>
+
+  <footer class="t-pie">
+    <p class="t-pie__marca" aria-hidden="true">Barranca</p>
+    <p>Tienda de ejemplo · Diseño y desarrollo: <a href="/">KUSAK</a></p>
+  </footer>
+
+  <dialog class="ficha" aria-labelledby="ficha-t" data-ficha>
+    <div class="ficha__caja">
+      <button class="cerrar" type="button" data-cerrar>Cerrar</button>
+      <div class="ficha__foto"><img src="assets/img/mate-barranca-900.webp" width="900" height="1200" alt="" data-ficha-img></div>
+      <div class="ficha__info">
+        <p class="ficha__variante" data-ficha-variante></p>
+        <h2 class="ficha__t" id="ficha-t" data-ficha-nombre></h2>
+        <p class="ficha__precio" data-ficha-precio></p>
+        <p class="ficha__desc" data-ficha-desc></p>
+        <div class="ficha__cantidad" role="group" aria-label="Cantidad">
+          <button type="button" data-menos aria-label="Uno menos">−</button>
+          <output data-cantidad aria-live="polite">1</output>
+          <button type="button" data-mas aria-label="Uno más">+</button>
+        </div>
+        <button class="t-boton t-boton--ancho" type="button" data-ficha-agregar>Agregar al carrito</button>
+        <p class="ficha__nota">Precio de ejemplo. Retiro en el taller o envío.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="carrito" aria-labelledby="carrito-t" data-carrito>
+    <div class="carrito__caja">
+      <header class="carrito__cab">
+        <h2 id="carrito-t">Tu carrito</h2>
+        <button class="cerrar" type="button" data-cerrar>Cerrar</button>
+      </header>
+      <ul class="carrito__lista" role="list" data-lista></ul>
+      <p class="carrito__vacio" data-vacio>Todavía no agregaste nada.</p>
+      <footer class="carrito__pie">
+        <p class="carrito__total"><span>Subtotal</span><strong data-total>$ 0</strong></p>
+        <button class="t-boton t-boton--ancho" type="button" data-finalizar>Finalizar compra</button>
+        <p class="carrito__estado" role="status" data-estado></p>
+      </footer>
+    </div>
+  </dialog>
+
+  <p class="aviso-agregado" role="status" data-aviso></p>
+
+  <script src="../assets/vendor/gsap.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="../assets/vendor/SplitText.min.js" defer></script>
+  <script src="../assets/vendor/lenis.min.js" defer></script>
+  <script src="../assets/movimiento.js" defer></script>
+  <script src="tienda.js" defer></script>
+</body>
+</html>

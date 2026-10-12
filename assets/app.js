@@ -148,38 +148,24 @@
     });
   }
 
-  /* ---------- Trabajos: la captura sigue al mouse y se recorre ---------- */
+  /* ---------- Trabajos: los videos corren solo mientras se ven ---------- */
 
-  const finoMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  $$('.obra').forEach(function (obra) {
-    const media = $('[data-media]', obra), fila = $('.obra__fila', obra);
-    if (!media || !fila) return;
-    const img = $('img', media);
-    const recorrer = function (si) {
-      if (si && img.naturalHeight) {
-        const alto = media.clientHeight, total = img.getBoundingClientRect().height;
-        media.style.setProperty('--recorrido', Math.min(0, alto - total) + 'px');
-      }
-      media.classList.toggle('recorrer', si);
-    };
-    if (finoMouse) {
-      let raf = 0, ex = 0, ey = 0;
-      fila.addEventListener('pointerenter', function () { media.classList.add('activa'); recorrer(true); });
-      fila.addEventListener('pointerleave', function () { media.classList.remove('activa'); recorrer(false); });
-      fila.addEventListener('pointermove', function (e) {
-        ex = e.clientX; ey = e.clientY;
-        if (raf) return;
-        raf = requestAnimationFrame(function () {
-          raf = 0;
-          media.style.setProperty('--mx', ex + 'px');
-          media.style.setProperty('--my', ey + 'px');
-        });
+  const videos = $$('[data-video]');
+  if (videos.length && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const vigiaVideo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        const v = e.target;
+        if (e.isIntersecting) {
+          if (v.preload === 'none') { v.preload = 'auto'; }
+          const p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        } else {
+          v.pause();
+        }
       });
-    } else {
-      // En táctil la captura va debajo de la fila y se recorre al tocarla
-      media.addEventListener('click', function () { recorrer(!media.classList.contains('recorrer')); });
-    }
-  });
+    }, { rootMargin: '200px 0px', threshold: 0.15 });
+    videos.forEach(function (v) { vigiaVideo.observe(v); });
+  }
 
   /* ---------- Presupuesto: el asistente arma el mensaje y abre WhatsApp ---------- */
 

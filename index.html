@@ -179,53 +179,74 @@
     <section class="trabajos tema-claro" id="trabajos" aria-labelledby="trabajos-t" data-seccion="trabajos">
       <header class="seccion-cab">
         <h2 class="seccion-cab__t" id="trabajos-t" data-anim="lines">Trabajos</h2>
-        <p class="seccion-cab__lema" data-anim="lines">Webs que hice y están publicadas. Pasá el mouse para recorrerlas, o abrí el sitio.</p>
+        <p class="seccion-cab__lema" data-anim="lines">Webs que hice y están publicadas, recorridas en computadora y en celular.</p>
       </header>
 
-      <ul class="obras" role="list" data-obras>
+      <ul class="obras" role="list">
         <li>
           <article class="obra" id="obra-gea" aria-labelledby="obra-gea-t">
-            <a class="obra__fila" href="https://geainsumos.com/" target="_blank" rel="noopener" data-cursor="Abrir">
-              <h3 class="obra__t" id="obra-gea-t">GEA Insumos</h3>
+            <div class="obra__info">
+              <h3 class="obra__t" id="obra-gea-t" data-anim="lines">GEA Insumos</h3>
               <p class="obra__tipo">Tienda online a medida</p>
               <p class="obra__rubro">Insumos de belleza, Rosario</p>
-              <span class="obra__abrir"><span class="sr-only">Abrir el sitio (se abre en otra pestaña)</span><svg class="ico" aria-hidden="true"><use href="#i-afuera"/></svg></span>
-            </a>
-            <ul class="obra__incluye" role="list">
-              <li>Precios y stock reales</li>
-              <li>Pedido por WhatsApp</li>
-              <li>Panel para cargar productos</li>
-            </ul>
-            <div class="obra__media" data-media>
-              <img src="assets/trabajos/gea-escritorio-750.webp" srcset="assets/trabajos/gea-escritorio-750.webp 750w, assets/trabajos/gea-escritorio-completa.webp 1200w" sizes="(max-width: 900px) 92vw, 34vw" width="750" height="1754" loading="lazy" decoding="async" alt="Tienda online de GEA Insumos, hecha por Lucas">
+              <ul class="obra__incluye" role="list">
+                <li>Precios y stock reales</li>
+                <li>Pedido por WhatsApp</li>
+                <li>Panel para cargar productos</li>
+              </ul>
+              <a class="enlace-flecha" href="https://geainsumos.com/" target="_blank" rel="noopener"><span class="rodar" data-texto="Abrir el sitio">Abrir el sitio</span><span class="sr-only"> de GEA Insumos (se abre en otra pestaña)</span><svg class="ico" aria-hidden="true"><use href="#i-afuera"/></svg></a>
             </div>
+            <a class="obra__media" href="https://geainsumos.com/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-cursor="Abrir">
+              <video muted loop playsinline preload="none" width="1200" height="750" poster="assets/trabajos/gea-poster.webp" data-video>
+                <source src="assets/trabajos/gea.webm" type="video/webm">
+                <source src="assets/trabajos/gea.mp4" type="video/mp4">
+              </video>
+            </a>
           </article>
         </li>
         <li>
           <article class="obra" id="obra-muebles" aria-labelledby="obra-muebles-t">
-            <a class="obra__fila" href="https://muebles-medida-rosario.kusak.workers.dev/" target="_blank" rel="noopener" data-cursor="Abrir">
-              <h3 class="obra__t" id="obra-muebles-t">Muebles de diseño</h3>
+            <div class="obra__info">
+              <h3 class="obra__t" id="obra-muebles-t" data-anim="lines">Muebles de diseño</h3>
               <p class="obra__tipo">Página web</p>
               <p class="obra__rubro">Carpintería, fabricantes directos</p>
-              <span class="obra__abrir"><span class="sr-only">Abrir el sitio (se abre en otra pestaña)</span><svg class="ico" aria-hidden="true"><use href="#i-afuera"/></svg></span>
-            </a>
-            <ul class="obra__incluye" role="list">
-              <li>Panel Keystatic para editar el contenido</li>
-            </ul>
-            <div class="obra__media" data-media>
-              <img src="assets/trabajos/muebles-escritorio-completa.webp" width="1200" height="6830" sizes="(max-width: 900px) 92vw, 34vw" loading="lazy" decoding="async" alt="Página del sitio Muebles de diseño en Rosario, en computadora">
+              <ul class="obra__incluye" role="list">
+                <li>Panel Keystatic para editar el contenido</li>
+              </ul>
+              <a class="enlace-flecha" href="https://muebles-medida-rosario.kusak.workers.dev/" target="_blank" rel="noopener"><span class="rodar" data-texto="Abrir el sitio">Abrir el sitio</span><span class="sr-only"> de Muebles de diseño (se abre en otra pestaña)</span><svg class="ico" aria-hidden="true"><use href="#i-afuera"/></svg></a>
             </div>
+            <a class="obra__media" href="https://muebles-medida-rosario.kusak.workers.dev/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-cursor="Abrir">
+              <video muted loop playsinline preload="none" width="1200" height="750" poster="assets/trabajos/muebles-poster.webp" data-video>
+                <source src="assets/trabajos/muebles.webm" type="video/webm">
+                <source src="assets/trabajos/muebles.mp4" type="video/mp4">
+              </video>
+            </a>
           </article>
         </li>
         <li>
-          <article class="obra obra--proxima" aria-labelledby="obra-tuya-t">
-            <a class="obra__fila" href="#presupuesto" data-cursor="Contame">
-              <h3 class="obra__t" id="obra-tuya-t">Tu negocio</h3>
-              <p class="obra__tipo">El próximo trabajo puede ser el tuyo.</p>
-              <p class="obra__rubro">Contame qué hace tu negocio y te propongo una página pensada para vos.</p>
-              <span class="obra__abrir" aria-hidden="true"><svg class="ico"><use href="#i-afuera"/></svg></span>
+          <article class="obra" id="obra-demo" aria-labelledby="obra-demo-t">
+            <div class="obra__info">
+              <h3 class="obra__t" id="obra-demo-t" data-anim="lines">Barranca</h3>
+              <p class="obra__tipo">Demo de tienda online</p>
+              <p class="obra__rubro">Marca ficticia que armé para mostrar una tienda completa.</p>
+              <ul class="obra__incluye" role="list">
+                <li>Catálogo</li>
+                <li>Vista de producto</li>
+                <li>Carrito</li>
+              </ul>
+              <a class="enlace-flecha" href="demo-tienda/"><span class="rodar" data-texto="Probar la demo">Probar la demo</span><svg class="ico" aria-hidden="true"><use href="#i-afuera"/></svg></a>
+            </div>
+            <a class="obra__media" href="demo-tienda/" tabindex="-1" aria-hidden="true" data-cursor="Probar">
+              <img src="demo-tienda/assets/img/portada-960.webp" srcset="demo-tienda/assets/img/portada-960.webp 960w, demo-tienda/assets/img/portada-1600.webp 1600w" sizes="(max-width: 1080px) 92vw, 60vw" width="1600" height="900" loading="lazy" decoding="async" alt="">
             </a>
           </article>
+        </li>
+        <li>
+          <a class="obra-proxima" href="#presupuesto" data-cursor="Contame">
+            <h3 class="obra-proxima__t">Tu negocio</h3>
+            <p>El próximo trabajo puede ser el tuyo. Contame qué hace tu negocio y te propongo una página pensada para vos.</p>
+            <span class="obra-proxima__flecha" aria-hidden="true"><svg class="ico"><use href="#i-afuera"/></svg></span>
+          </a>
         </li>
       </ul>
     </section>

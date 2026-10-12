@@ -70,7 +70,8 @@
       return s;
     },
     chars: function (el) {
-      const s = window.SplitText.create(el, { type: 'chars', charsClass: 'letra' });
+      // Si el texto ya está oculto para lectores de pantalla, SplitText no le agrega etiqueta propia
+      const s = window.SplitText.create(el, { type: 'chars', charsClass: 'letra', aria: el.closest('[aria-hidden="true"]') ? 'none' : 'auto' });
       return gsap.from(s.chars, { yPercent: 110, duration: 1.4, stagger: 0.035, delay: Number(el.dataset.delay || 0) });
     },
     fade: function (el) {

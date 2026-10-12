@@ -5,7 +5,7 @@ Uso:
     python herramientas/publicar.py --subir            # arma y sube
     python herramientas/publicar.py --url https://kusak.com.ar --subir   # con dominio propio
 
-Va a dist/: index.html (con la dirección absoluta para redes y buscadores), 404.html,
+Va a dist/: index.html (con la dirección absoluta para redes y buscadores), 404.html, demo-tienda/,
 assets/ sin los .json de procedencia, _headers (cabeceras de seguridad y caché),
 robots.txt, sitemap.xml y .well-known/security.txt. El resto del proyecto (notas y archivos internos) no se publica.
 """
@@ -69,6 +69,8 @@ def armar(url):
     shutil.copy2(RAIZ / '404.html', DIST / '404.html')
     shutil.copy2(RAIZ / 'privacidad.html', DIST / 'privacidad.html')
     shutil.copytree(RAIZ / 'assets', DIST / 'assets', ignore=shutil.ignore_patterns('*.json'))
+    # Demo de tienda (sin los originales de las fotos ni su procedencia)
+    shutil.copytree(RAIZ / 'demo-tienda', DIST / 'demo-tienda', ignore=shutil.ignore_patterns('originales', '*.json'))
 
     # La misma política de la página, más lo que solo se puede poner como cabecera
     csp = re.search(r'http-equiv="Content-Security-Policy" content="([^"]+)"', html).group(1)
@@ -89,6 +91,12 @@ def armar(url):
         '  Cache-Control: public, max-age=604800\n'
         '\n'
         '/assets/marca/*\n'
+        '  Cache-Control: public, max-age=604800\n'
+        '\n'
+        '/assets/vendor/*\n'
+        '  Cache-Control: public, max-age=604800\n'
+        '\n'
+        '/demo-tienda/assets/*\n'
         '  Cache-Control: public, max-age=604800\n' % csp,
         encoding='utf-8')
 

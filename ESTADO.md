@@ -28,11 +28,12 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 - [x] Rediseño de cero "Escritorio de los 90": solo KUSAK, logo nuevo, inicio, trabajos, servicios, instalación, asistente de presupuesto, 404, privacidad y og.png (2026-10-11)
 - [x] "Escritorio de los 90" archivado en `variantes/escritorio-90/` (2026-10-12)
 - [x] Nueva dirección "nivel agencia" (referencia hellohello.is): inicio nuevo, kit de movimiento (`assets/movimiento.js`, GSAP + Lenis en `assets/vendor/`) y campo animado propio (`assets/campo.js`) (2026-10-12)
-- [ ] Elegir el acento (rojo, amarillo taxi o celeste) y sacar el selector de prueba
-- [ ] Videos de trabajos con HyperFrames (capturas reales de GEA y Muebles)
-- [ ] 404, privacidad y og.png en el sistema nuevo
-- [ ] Revisión final (finish review) y DESIGN.md nuevo
+- [x] Acento elegido: amarillo taxi; selector de prueba sacado (2026-10-12)
+- [x] Videos de trabajos con HyperFrames (`videos/trabajos/`, `herramientas/videos-trabajos.py`): GEA y Muebles en loop en la sección Trabajos (2026-10-12)
+- [x] 404, privacidad y og.png en el sistema nuevo (2026-10-12)
+- [x] Revisión final (ship tras 2 rondas de correcciones) y DESIGN.md nuevo (2026-10-12)
 - [ ] Commitear y publicar el rediseño
+- [x] Borradas las fuentes sin uso (Shippori Mincho, Zen Kaku Gothic) y `gea-escritorio-750.webp` (2026-10-12)
 
 ## Etapa 2 — Calidad · 15 %
 - [x] Auditoría: datos estructurados, security.txt, SŌ accesible y medición opcional
@@ -57,9 +58,9 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 - [ ] Reemplazar la captura de la carpintería que usa fotos de Pinterest
 
 ## Etapa 6 — Demo de tienda · 15 %
-- [ ] `demo-tienda/`: tienda ficticia marcada como demo, con grilla, vista rápida, carrito y ficha con View Transitions
-- [ ] Imágenes de producto (generadas con permiso o hechas con código)
-- [ ] Enlazarla desde Trabajos y sumarla a `publicar.py`
+- [x] `demo-tienda/`: Barranca, tienda ficticia marcada como demo, con grilla, ficha con View Transitions y carrito (2026-10-12)
+- [x] 10 fotos de producto generadas para la demo (con permiso); originales y procedencia en `demo-tienda/assets/img/originales/` (no se publican)
+- [x] Enlazada desde Trabajos y sumada a `publicar.py` (2026-10-12)
 
 ## Continuo · 0 %
 - [ ] Revisar que el sitemap pase a "Correcto" en Search Console [PENDIENTE: confirmar]

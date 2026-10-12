@@ -7,25 +7,22 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="robots" content="noindex">
   <title>Esta página no existe · KUSAK</title>
-  <meta name="theme-color" content="#008080">
+  <meta name="theme-color" content="#0d0d0c">
   <link rel="icon" href="/assets/marca/kusak-icono.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/estilo.css">
 </head>
 <body>
-  <main class="suelta">
-    <div class="ventana ventana--dialogo">
-      <div class="ventana__titulo">
-        <p class="ventana__nombre">Error</p>
-      </div>
-      <div class="ventana__cuerpo">
-        <a class="logo logo--enlace" href="/"><img src="/assets/marca/kusak-icono.svg" width="32" height="32" alt="">KUSAK<span class="sr-only">, ir al inicio</span></a>
-        <h1>Esta página no existe.</h1>
-        <p>Puede que el link esté mal escrito o que la página ya no esté.</p>
-        <div class="acciones">
-          <a class="boton boton--predeterminado" href="/">Volver al inicio</a>
-          <a class="boton" href="https://wa.me/5493415000651?text=Hola%2C%20Lucas.%20Vi%20tu%20web%20y%20quiero%20hacerte%20una%20consulta." target="_blank" rel="noopener">Escribime por WhatsApp<span class="sr-only"> (se abre WhatsApp)</span></a>
-        </div>
-      </div>
+  <header class="cabecera cabecera--simple">
+    <a class="marca" href="/">KUSAK<span class="sr-only">, ir al inicio</span></a>
+    <a class="pildora" href="https://wa.me/5493415000651?text=Hola%2C%20Lucas.%20Vi%20tu%20web%20y%20quiero%20hacerte%20una%20consulta." target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (se abre WhatsApp)</span></a>
+  </header>
+  <main class="suelta suelta--error">
+    <p class="suelta__codigo" aria-hidden="true">404</p>
+    <h1 class="suelta__t">Esta página no existe.</h1>
+    <p class="suelta__bajada">Puede que el link esté mal escrito o que la página ya no esté.</p>
+    <div class="acciones">
+      <a class="boton boton--acento" href="/">Volver al inicio</a>
+      <a class="boton boton--linea" href="https://wa.me/5493415000651?text=Hola%2C%20Lucas.%20Vi%20tu%20web%20y%20quiero%20hacerte%20una%20consulta." target="_blank" rel="noopener">Escribime por WhatsApp<span class="sr-only"> (se abre WhatsApp)</span></a>
     </div>
   </main>
 </body>
