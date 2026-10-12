@@ -19,7 +19,7 @@
   const VERT = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
   const FRAG = [
     'precision mediump float;',
-    'uniform vec2 uRes;uniform float uT;uniform vec2 uM;uniform float uF;uniform vec3 uA;',
+    'uniform vec2 uRes;uniform float uT;uniform vec2 uM;uniform float uF;uniform vec3 uA;uniform float uPx;uniform float uEdad;uniform float uS;',
     'void main(){',
     ' float lado=min(uRes.x,uRes.y);',
     ' vec2 p=(gl_FragCoord.xy*2.-uRes)/lado;',
@@ -37,9 +37,17 @@
     // y solo si el dedo está cerca de la cinta: lejos, no la arrastra encima del texto
     ' float tira=uF*exp(-pow((p.x-m.x)*2.2,2.))*.7*smoothstep(.75,.2,abs(m.y-bajo));',
     ' y1+=(m.y-y1)*tira;y2+=(m.y-y2)*tira;y3+=(m.y-y3)*tira*.6;',
+    // Un toque en cualquier parte del inicio la hace vibrar desde ese punto: una onda que viaja y se apaga
+    ' float px=(uPx*2.-uRes.x)/lado;float dx=abs(p.x-px);',
+    ' float env=exp(-uEdad*1.4)*exp(-dx*dx*.35);',
+    ' float vib=env*sin(uEdad*13.-dx*5.)*.22;',
+    // y el scroll la sacude según la velocidad
+    ' float sac=uS*sin(p.x*3.1+uT*2.)*.12;',
+    ' y1+=vib+sac;y2+=vib*.85+sac*.9;y3+=vib*.6+sac*.7;',
+    ' float extra=1.+env*.9+abs(uS)*.6;',
     ' float a=.03/abs(p.y-y1),b=.022/abs(p.y-y2),g=.02/abs(p.y-y3);',
     ' vec3 c=uA*min(a,1.6)+vec3(1.,.96,.86)*min(b,1.4)*.7+vec3(.55,.54,.5)*min(g,1.2)*.5;',
-    ' gl_FragColor=vec4(vec3(.051,.051,.047)+c*.85,1.);',
+    ' gl_FragColor=vec4(vec3(.051,.051,.047)+c*.85*extra,1.);',
     '}'
   ].join('\n');
 
@@ -66,7 +74,7 @@
   gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
   const U = {};
-  ['uRes', 'uT', 'uM', 'uF', 'uA'].forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
+  ['uRes', 'uT', 'uM', 'uF', 'uA', 'uPx', 'uEdad', 'uS'].forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
 
   // El amarillo sale del CSS
   const probe = document.createElement('span');
@@ -97,6 +105,26 @@
   window.addEventListener('pointermove', apuntar, { passive: true });
   window.addEventListener('pointerdown', apuntar, { passive: true });
 
+  // Toque: en celular el dedo casi nunca cae sobre la cinta, así que cualquier toque en el inicio la hace vibrar
+  let toqueX = canvas.width * 0.5, toqueT = -10;
+  const tocar = function (e) {
+    const r = canvas.getBoundingClientRect();
+    if (e.clientY < r.top || e.clientY > r.bottom) return;
+    toqueX = (e.clientX - r.left) * ESCALA;
+    toqueT = performance.now() / 1000;
+    ultimo = performance.now();
+  };
+  window.addEventListener('pointerdown', tocar, { passive: true });
+
+  // Scroll: la velocidad la sacude un poco (y se calma sola)
+  let sacudida = 0, ultimaY = window.scrollY;
+  window.addEventListener('scroll', function () {
+    const y = window.scrollY;
+    sacudida = Math.max(-1, Math.min(1, sacudida + (y - ultimaY) / 400));
+    ultimaY = y;
+    ultimo = performance.now();
+  }, { passive: true });
+
   const t0 = performance.now();
   const dibujar = function (ahora) {
     if (ahora - ultimo > 1200) objetivo = 0;
@@ -105,6 +133,10 @@
     gl.uniform1f(U.uT, (ahora - t0) / 1000);
     gl.uniform2f(U.uM, mx, my);
     gl.uniform1f(U.uF, fuerza);
+    sacudida *= 0.92;
+    gl.uniform1f(U.uPx, toqueX);
+    gl.uniform1f(U.uEdad, ahora / 1000 - toqueT);
+    gl.uniform1f(U.uS, sacudida);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 

@@ -2,7 +2,7 @@
 html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--negro); }
 .og { position: relative; width: 1200px; height: 630px; padding: 52px 56px; display: grid; grid-template-rows: auto 1fr auto; }
 .og .marca { font-size: 30px; }
-.og__t { align-self: center; width: 640px; font-size: 92px; font-weight: 850; line-height: 0.9; letter-spacing: -0.04em; color: var(--hueso); }
+.og__t { align-self: center; width: 660px; font-size: 76px; font-weight: 850; font-stretch: 125%; line-height: 0.92; letter-spacing: -0.025em; color: var(--hueso); }
 .og__t span { color: var(--acento); }
 .og__pie { display: flex; align-items: center; gap: 24px; font-size: 20px; font-weight: 600; color: var(--gris); }
 .og__wa { padding: 10px 20px; border-radius: 999px; background: var(--acento); color: var(--negro); }
