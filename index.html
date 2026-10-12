@@ -71,7 +71,12 @@
   <main id="contenido">
 
     <section class="hero" id="inicio" aria-labelledby="titulo" data-seccion="inicio">
-      <canvas class="hero__campo" aria-hidden="true" data-campo></canvas>
+      <video class="hero__campo" muted loop playsinline preload="auto" poster="assets/hero/pulso-poster.webp" width="1920" height="1080" aria-hidden="true" data-campo>
+        <source src="assets/hero/pulso-vertical.webm" type="video/webm" media="(max-aspect-ratio: 1/1)">
+        <source src="assets/hero/pulso-vertical.mp4" type="video/mp4" media="(max-aspect-ratio: 1/1)">
+        <source src="assets/hero/pulso.webm" type="video/webm">
+        <source src="assets/hero/pulso.mp4" type="video/mp4">
+      </video>
       <div class="hero__cuerpo">
         <h1 class="hero__titulo" id="titulo">
           <span class="sr-only">Hago páginas web, tiendas online, sistemas y asistentes con IA para tu negocio.</span>
@@ -358,7 +363,6 @@
   <script src="assets/vendor/SplitText.min.js" defer></script>
   <script src="assets/vendor/lenis.min.js" defer></script>
   <script src="assets/movimiento.js" defer></script>
-  <script src="assets/campo.js" defer></script>
   <script src="assets/app.js" defer></script>
 </body>
 </html>

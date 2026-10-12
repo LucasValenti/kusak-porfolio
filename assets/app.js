@@ -148,6 +148,16 @@
     });
   }
 
+  /* ---------- Fondo del inicio: el video del pulso corre solo mientras se ve ---------- */
+
+  const campo = $('[data-campo]');
+  if (campo && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { const p = campo.play(); if (p && p.catch) p.catch(function () {}); }
+      else campo.pause();
+    }).observe(campo);
+  }
+
   /* ---------- Trabajos: los videos corren solo mientras se ven ---------- */
 
   const videos = $$('[data-video]');
