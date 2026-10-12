@@ -33,6 +33,7 @@ Portfolio y vitrina de KUSAK en HTML, CSS y JS sin build, publicado en Cloudflar
 - [x] 404, privacidad y og.png en el sistema nuevo (2026-10-12)
 - [x] Revisión final (ship tras 2 rondas de correcciones) y DESIGN.md nuevo (2026-10-12)
 - [x] Commitear y publicar el rediseño (`9189b63`, kusak.dev, 2026-10-12)
+- [x] Fondo "Pulso" (líneas que se levantan en picos) y glitch de corte RGB en los botones, elegidos entre cinco fondos y tres glitch (2026-10-12)
 - [x] Borradas las fuentes sin uso (Shippori Mincho, Zen Kaku Gothic) y `gea-escritorio-750.webp` (2026-10-12)
 
 ## Etapa 2 — Calidad · 15 %
